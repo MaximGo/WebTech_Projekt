@@ -1,26 +1,309 @@
 <!DOCTYPE html>
 
 <!--
-  Copyright (c) 2015, <your name>. All rights reserved. Use of this source code
+  Copyright (c) 2015, <Max Golubew, Antonia Berg & Berengar Doege>. All rights reserved. Use of this source code
   is governed by a BSD-style license that can be found in the LICENSE file.
 -->
 
 <html>
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="scaffolded-by" content="https://github.com/google/stagehand">
     <title>Tetris</title>
-
     <link rel="stylesheet" href="styles/main.css">
-</head>
+  </head>
 
-<body>
-
-  <div id="output"></div>
-
-<script type="application/dart" src="main.dart"></script>
-<script data-pub-inline src="packages/browser/dart.js"></script>
-</body>
+  <body>
+    <div class="container">
+      <table id="layout">
+        <tr>
+          <td>
+            <table id="tetrisfield">
+              <tbody>
+                <tr>
+                  <td x="0" y="0"></td>
+                  <td x="0" y="1"></td>
+                  <td x="0" y="2"></td>
+                  <td x="0" y="3"></td>
+                  <td x="0" y="4"></td>
+                  <td x="0" y="5"></td>
+                  <td x="0" y="6"></td>
+                  <td x="0" y="7"></td>
+                  <td x="0" y="8"></td>
+                  <td x="0" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="1" y="0"></td>
+                  <td x="1" y="1"></td>
+                  <td x="1" y="2"></td>
+                  <td x="1" y="3"></td>
+                  <td x="1" y="4"></td>
+                  <td x="1" y="5"></td>
+                  <td x="1" y="6"></td>
+                  <td x="1" y="7"></td>
+                  <td x="1" y="8"></td>
+                  <td x="1" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="2" y="0"></td>
+                  <td x="2" y="1"></td>
+                  <td x="2" y="2"></td>
+                  <td x="2" y="3"></td>
+                  <td x="2" y="4"></td>
+                  <td x="2" y="5"></td>
+                  <td x="2" y="6"></td>
+                  <td x="2" y="7"></td>
+                  <td x="2" y="8"></td>
+                  <td x="2" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="3" y="0"></td>
+                  <td x="3" y="1"></td>
+                  <td x="3" y="2"></td>
+                  <td x="3" y="3"></td>
+                  <td x="3" y="4"></td>
+                  <td x="3" y="5"></td>
+                  <td x="3" y="6"></td>
+                  <td x="3" y="7"></td>
+                  <td x="3" y="8"></td>
+                  <td x="3" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="4" y="0"></td>
+                  <td x="4" y="1"></td>
+                  <td x="4" y="2"></td>
+                  <td x="4" y="3"></td>
+                  <td x="4" y="4"></td>
+                  <td x="4" y="5"></td>
+                  <td x="4" y="6"></td>
+                  <td x="4" y="7"></td>
+                  <td x="4" y="8"></td>
+                  <td x="4" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="5" y="0"></td>
+                  <td x="5" y="1"></td>
+                  <td x="5" y="2"></td>
+                  <td x="5" y="3"></td>
+                  <td x="5" y="4"></td>
+                  <td x="5" y="5"></td>
+                  <td x="5" y="6"></td>
+                  <td x="5" y="7"></td>
+                  <td x="5" y="8"></td>
+                  <td x="5" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="6" y="0"></td>
+                  <td x="6" y="1"></td>
+                  <td x="6" y="2"></td>
+                  <td x="6" y="3"></td>
+                  <td x="6" y="4"></td>
+                  <td x="6" y="5"></td>
+                  <td x="6" y="6"></td>
+                  <td x="6" y="7"></td>
+                  <td x="6" y="8"></td>
+                  <td x="6" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="7" y="0"></td>
+                  <td x="7" y="1"></td>
+                  <td x="7" y="2"></td>
+                  <td x="7" y="3"></td>
+                  <td x="7" y="4"></td>
+                  <td x="7" y="5"></td>
+                  <td x="7" y="6"></td>
+                  <td x="7" y="7"></td>
+                  <td x="7" y="8"></td>
+                  <td x="7" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="8" y="0"></td>
+                  <td x="8" y="1"></td>
+                  <td x="8" y="2"></td>
+                  <td x="8" y="3"></td>
+                  <td x="8" y="4"></td>
+                  <td x="8" y="5"></td>
+                  <td x="8" y="6"></td>
+                  <td x="8" y="7"></td>
+                  <td x="8" y="8"></td>
+                  <td x="8" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="9" y="0"></td>
+                  <td x="9" y="1"></td>
+                  <td x="9" y="2"></td>
+                  <td x="9" y="3" id="blue-stone"></td>
+                  <td x="9" y="4" id="blue-stone"></td>
+                  <td x="9" y="5" id="blue-stone"></td>
+                  <td x="9" y="6"></td>
+                  <td x="9" y="7"></td>
+                  <td x="9" y="8"></td>
+                  <td x="9" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="10" y="0"></td>
+                  <td x="10" y="1"></td>
+                  <td x="10" y="2"></td>
+                  <td x="10" y="3"></td>
+                  <td x="10" y="4" id="blue-stone"></td>
+                  <td x="10" y="5"></td>
+                  <td x="10" y="6"></td>
+                  <td x="10" y="7"></td>
+                  <td x="10" y="8"></td>
+                  <td x="10" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="11" y="0"></td>
+                  <td x="11" y="1"></td>
+                  <td x="11" y="2"></td>
+                  <td x="11" y="3"></td>
+                  <td x="11" y="4"></td>
+                  <td x="11" y="5"></td>
+                  <td x="11" y="6"></td>
+                  <td x="11" y="7"></td>
+                  <td x="11" y="8"></td>
+                  <td x="11" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="12" y="0"></td>
+                  <td x="12" y="1"></td>
+                  <td x="12" y="2"></td>
+                  <td x="12" y="3"></td>
+                  <td x="12" y="4"></td>
+                  <td x="12" y="5"></td>
+                  <td x="12" y="6"></td>
+                  <td x="12" y="7"></td>
+                  <td x="12" y="8"></td>
+                  <td x="12" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="13" y="0"></td>
+                  <td x="13" y="1"></td>
+                  <td x="13" y="2"></td>
+                  <td x="13" y="3"></td>
+                  <td x="13" y="4"></td>
+                  <td x="13" y="5"></td>
+                  <td x="13" y="6"></td>
+                  <td x="13" y="7"></td>
+                  <td x="13" y="8"></td>
+                  <td x="13" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="14" y="0"></td>
+                  <td x="14" y="1"></td>
+                  <td x="14" y="2"></td>
+                  <td x="14" y="3"></td>
+                  <td x="14" y="4"></td>
+                  <td x="14" y="5"></td>
+                  <td x="14" y="6"></td>
+                  <td x="14" y="7"></td>
+                  <td x="14" y="8"></td>
+                  <td x="14" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="15" y="0"></td>
+                  <td x="15" y="1"></td>
+                  <td x="15" y="2"></td>
+                  <td x="15" y="3"></td>
+                  <td x="15" y="4"></td>
+                  <td x="15" y="5"></td>
+                  <td x="15" y="6"></td>
+                  <td x="15" y="7"></td>
+                  <td x="15" y="8"></td>
+                  <td x="15" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="16" y="0"></td>
+                  <td x="16" y="1"></td>
+                  <td x="16" y="2"></td>
+                  <td x="16" y="3"></td>
+                  <td x="16" y="4"></td>
+                  <td x="16" y="5"></td>
+                  <td x="16" y="6"></td>
+                  <td x="16" y="7"></td>
+                  <td x="16" y="8"></td>
+                  <td x="16" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="17" y="0"></td>
+                  <td x="17" y="1"></td>
+                  <td x="17" y="2"></td>
+                  <td x="17" y="3"></td>
+                  <td x="17" y="4"></td>
+                  <td x="17" y="5"></td>
+                  <td x="17" y="6"></td>
+                  <td x="17" y="7"></td>
+                  <td x="17" y="8"></td>
+                  <td x="17" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="18" y="0"></td>
+                  <td x="18" y="1"></td>
+                  <td x="18" y="2"></td>
+                  <td x="18" y="3"></td>
+                  <td x="18" y="4"></td>
+                  <td x="18" y="5"></td>
+                  <td x="18" y="6"></td>
+                  <td x="18" y="7"></td>
+                  <td x="18" y="8"></td>
+                  <td x="18" y="9"></td>
+                </tr>
+                <tr>
+                  <td x="19" y="0"></td>
+                  <td x="19" y="1"></td>
+                  <td x="19" y="2"></td>
+                  <td x="19" y="3"></td>
+                  <td x="19" y="4"></td>
+                  <td x="19" y="5"></td>
+                  <td x="19" y="6"></td>
+                  <td x="19" y="7"></td>
+                  <td x="19" y="8"></td>
+                  <td x="19" y="9"></td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+          <td>
+            <p>Nächster Stein</p>
+            <table id="nextstone">
+              <tbody>
+                <tr>
+                  <td x="0" y="0"></td>
+                  <td x="0" y="1"></td>
+                  <td x="0" y="2"></td>
+                  <td x="0" y="3"></td>
+                </tr>
+                <tr>
+                  <td x="1" y="0"></td>
+                  <td x="1" y="1" id="yellow-stone"></td>
+                  <td x="1" y="2" id="yellow-stone"></td>
+                  <td x="1" y="3"></td>
+                </tr>
+                <tr>
+                  <td x="2" y="0"></td>
+                  <td x="2" y="1" id="yellow-stone"></td>
+                  <td x="2" y="2" id="yellow-stone"></td>
+                  <td x="2" y="3"></td>
+                </tr>
+                <tr>
+                  <td x="3" y="0"></td>
+                  <td x="3" y="1"></td>
+                  <td x="3" y="2"></td>
+                  <td x="3" y="3"></td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              <p>Score: 500</p>
+              <p>Level: 3</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <script type="application/dart" src="main.dart"></script>
+    <script data-pub-inline src="packages/browser/dart.js"></script>
+  </body>
 </html>
