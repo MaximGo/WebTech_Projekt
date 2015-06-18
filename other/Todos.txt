@@ -1,0 +1,4 @@
+Todo's:
+	- Klasse Level bearbeiten, sodass auch Foremlen eingelesen werden und die Daten der Klasse dynamisch bestimmt werden
+	- GameData sollte noch einen ENUM an Farben haben, wodurch dann ein Random ausgelöst wird und für einen Spielstein eine Farbe bestimmt wird
+	- Json soll angepasst werden, sodass bei Level die Formeln eingelesen werden und nicht die einzelnen Punkte
