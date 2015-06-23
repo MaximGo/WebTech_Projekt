@@ -7,3 +7,4 @@ import 'dart:math';
 part 'model/tetriminos.dart';
 part 'model/tetrimino.dart';
 part 'model/field.dart';
+part 'model/gamedata.dart';

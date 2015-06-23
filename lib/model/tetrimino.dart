@@ -19,13 +19,21 @@ class tetrimino {
 
   /// Generiert eine FieldListe aus einem [hexAlignment]
   List<List<field>> _createFieldList(String hexAlignment) {
+
     // Erstellt ein Tetriminofeld
     List<List<field>> t_field = new List<List<field>>();
     // Schneidet das '0x' am Anfang ab
     String hexStr = hexAlignment.substring(2);
 
+    // Damit der Spielstein auf der Y-Ebene noch über dem Spielfeld liegt
+    int height = -4;
+
     // Durchläuft jede Ziffer
     for (var c in hexStr.split('')) {
+
+      // Für die Zentrierung des Spielsteines am oberen Ende
+      int width = (gamedata._tetrisFieldWidth / 2).toInt() - 1;
+
       // Wandelt die Ziffer in Binär um
       String binValue = num.parse("0x$c").toInt().toRadixString(2).padLeft(4, '0');
       // Bildet eine Zeile des Spielsteines ab
@@ -33,16 +41,14 @@ class tetrimino {
 
       // Befüllt die Zeile
       for (var b in binValue.split('')) {
-
-        // TODO - Hier muss man sich was bei den StartKoordinaten einfallen lassen. Wenn moveDown() aufgerufen wird,
-        // so wird auch jede Zeile um einen nach unten verschoben. Idee: Die Y-Koordinate pro Reihe von -4 bis -1 anzugeben.
-        // Wird nun moveDown() aufgerufen ist die unterste Zeile auf Y = 0 => also auf dem Spielfeld auch Y = 0
         bool status = b.startsWith('1');
-        field f = new field(0, 0, status);
+        field f = new field(width, height, status);
         row.add(f);
+        width += 1;
       }
       // Fügt die Zeile dem Tetriminofeld hinzu
       t_field.add(row);
+      height += 1;
     }
     return t_field;
   }
