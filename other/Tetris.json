@@ -16,13 +16,11 @@
     "+": ["0x4e40", "0x4e40", "0x4e40", "0x4e40"],
     "Br": ["0x7770", "0x7770", "0x7770", "0x7770"]
   },
-  "Level": {
-    "1": {
-      "Reihe1": 40,
-      "Reihe2": 100,
-      "Reihe3": 300,
-      "Reihe4": 1200,
-      "Levelaufstieg": 3600
-    } 
+  "LevelStart": {
+    "Reihe1": 40,
+    "Reihe2": 100,
+    "Reihe3": 300,
+    "Reihe4": 1200,
+    "Levelaufstieg": 3600
   }
 }
