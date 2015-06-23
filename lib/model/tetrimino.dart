@@ -1,5 +1,4 @@
-import 'field.dart';
-import 'dart:math';
+part of tetris;
 
 /// Die Klasse [tetrimino] representiert einen Spielstein.
 class tetrimino {
@@ -17,7 +16,6 @@ class tetrimino {
 
   /// Generiert eine FieldListe aus einem [hexAlignment]
   List<List<field>> _createFieldList(String hexAlignment) {
-
     // Erstellt ein Tetriminofeld
     List<List<field>> t_field = new List<List<field>>();
     // Schneidet das '0x' am Anfang ab

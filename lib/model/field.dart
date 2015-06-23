@@ -1,3 +1,5 @@
+part of tetris;
+
 /// Die Klasse [field] representiert ein einzelnes Feld des gesamten Tetris-Spielfeldes und des Tetriminofeldes
 class field {
 

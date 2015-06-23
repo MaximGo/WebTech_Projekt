@@ -1,4 +1,4 @@
-import 'package:Tetris/tetris.dart';
+import 'package:tetris/tetris.dart';
 
-// TODO - Start the MainFunction
+// TODO - Run Main-function
 main() => null;
