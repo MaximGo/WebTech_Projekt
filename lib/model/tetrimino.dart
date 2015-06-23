@@ -33,7 +33,10 @@ class tetrimino {
 
       // Befüllt die Zeile
       for (var b in binValue.split('')) {
-        // Pos '0:0' weil der Spielstein sich noch nicht im Spielfeld befindet
+
+        // TODO - Hier muss man sich was bei den StartKoordinaten einfallen lassen. Wenn moveDown() aufgerufen wird,
+        // so wird auch jede Zeile um einen nach unten verschoben. Idee: Die Y-Koordinate pro Reihe von -4 bis -1 anzugeben.
+        // Wird nun moveDown() aufgerufen ist die unterste Zeile auf Y = 0 => also auf dem Spielfeld auch Y = 0
         bool status = b.startsWith('1');
         field f = new field(0, 0, status);
         row.add(f);
@@ -115,7 +118,7 @@ class tetrimino {
   }
 
 
-  /// Bewegt den Spielstein nach rechts
+  /// Bewegt den Spielstein um ein Feld nach rechts
   List<List<field>> moveRight() {
 
     for (List<field> row in _tetriminoField) {
@@ -127,12 +130,24 @@ class tetrimino {
   }
 
 
-  /// Bewegt den Spielstein nach links
+  /// Bewegt den Spielstein um ein Feld nach links
   List<List<field>> moveLeft() {
 
     for (List<field> row in _tetriminoField) {
       for (field f in row) {
         f.posX -= 1;
+      }
+    }
+    return _tetriminoField;
+  }
+
+
+  /// Bewegt den Spielstein um ein Feld nach unten
+  List<List<field>> moveDown() {
+
+    for (List<field> row in _tetriminoField) {
+      for (field f in row) {
+        f.posY += 1;
       }
     }
     return _tetriminoField;
