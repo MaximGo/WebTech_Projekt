@@ -3,15 +3,18 @@ part of tetris;
 /// Die Klasse [tetrimino] representiert einen Spielstein.
 class tetrimino {
 
-  String            _type;
-  String            _color;
-  int               _actAlignmentIndex;
-  List<String>      _hexAlignments;
-  List<List<field>> _tetriminoField;
+  String            _type;                // Typ des Tetrimino z.B. 'z'
+  String            _color;               // Farbe des Tetrimino z.B. 'Schwarz'
+  int               _actAlignmentIndex;   // Index der Liste, welche die aktuelle Ausrichtung ist
+  List<String>      _hexAlignments;       // Liste aller 4 Ausrichtungen
+  List<List<field>> _tetriminoField;      // Liste des 4x4 Tetriminos
 
   /// Konstruktor der Klasse Tetrimino.
   /// Benötigt den [_type] und die [_hexAlignments].
   tetrimino(this._type, this._hexAlignments);
+
+  /// Getter für das Tetriminofeld
+  List<List<field>> get tetriminoField => _tetriminoField;
 
 
   /// Generiert eine FieldListe aus einem [hexAlignment]
@@ -43,14 +46,15 @@ class tetrimino {
 
 
   /// Bereitet den Spielstein für den Einsatz vor
-  List<List<field>> getReadyForUse(String color) {
+  tetrimino getReadyForUse(String color) {
     // Wählt eine zufällige Ausrichtung und erstellt das Feld
     final random = new Random();
     _actAlignmentIndex = random.nextInt(_hexAlignments.length);
     var hexAlignment = _hexAlignments[_actAlignmentIndex];
     _tetriminoField = _createFieldList(hexAlignment);
-    // Setzt die Farbe und gibt das Tetriminofled zurück
-    return _setTetriminoColor(color);
+    // Setzt die Farbe und gibt den tetrimino zurück
+    _setTetriminoColor(color);
+    return this;
   }
 
 
@@ -76,7 +80,7 @@ class tetrimino {
 
 
   /// Setzt die Farbe des Spielsteines
-  List<List<field>> _setTetriminoColor(String color) {
+  void _setTetriminoColor(String color) {
 
     _color = color;
 
@@ -88,8 +92,6 @@ class tetrimino {
         }
       }
     }
-
-    return _tetriminoField;
   }
 
 
