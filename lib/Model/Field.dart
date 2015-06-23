@@ -1,7 +1,5 @@
-part of tetris;
-
-/// Die Klasse [Field] representiert ein einzelnes Feld des gesamten Tetris-Spielfeldes und des Tetriminofeldes
-class Field {
+/// Die Klasse [field] representiert ein einzelnes Feld des gesamten Tetris-Spielfeldes und des Tetriminofeldes
+class field {
 
   bool    _status;
   String  _color;
@@ -10,7 +8,7 @@ class Field {
 
   /// Konstruktor der Klasse Field.
   /// Benötigt die Koordinaten [_posX] und [_posY] sowie den [_status] ob das Feld gesetzt ist oder nicht.
-  Field(this._posX, this._posY, this._status);
+  field(this._posX, this._posY, this._status);
 
   // Getter und Setter für den Status des Feldes
   bool get status => _status;

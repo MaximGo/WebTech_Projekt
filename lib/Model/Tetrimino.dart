@@ -1,26 +1,25 @@
-part of tetris;
+import 'field.dart';
+import 'dart:math';
 
-/// Die Klasse [Tetrimino] representiert einen Spielstein.
-class Tetrimino {
+/// Die Klasse [tetrimino] representiert einen Spielstein.
+class tetrimino {
 
   String            _type;
+  String            _color;
   int               _actAlignmentIndex;
   List<String>      _hexAlignments;
-  List<List<Field>> _tetriminoField;
+  List<List<field>> _tetriminoField;
 
   /// Konstruktor der Klasse Tetrimino.
   /// Benötigt den [_type] und die [_hexAlignments].
-  Tetrimino(this._type, this._hexAlignments);
+  tetrimino(this._type, this._hexAlignments);
 
-  // Getter für den type
-  String get type => _type;
 
   /// Generiert eine FieldListe aus einem [hexAlignment]
-  List<List<Field>> _createFieldList(String hexAlignment) {
+  List<List<field>> _createFieldList(String hexAlignment) {
 
-    // Erstellt ein 4x4 Tetriminofeld
-    List<List<Field>> field = new List<List<Field>>();
-
+    // Erstellt ein Tetriminofeld
+    List<List<field>> t_field = new List<List<field>>();
     // Schneidet das '0x' am Anfang ab
     String hexStr = hexAlignment.substring(2);
 
@@ -29,40 +28,45 @@ class Tetrimino {
       // Wandelt die Ziffer in Binär um
       String binValue = num.parse("0x$c").toInt().toRadixString(2).padLeft(4, '0');
       // Bildet eine Zeile des Spielsteines ab
-      var row = new List<Field>();
+      var row = new List<field>();
+
       // Befüllt die Zeile
-      for (var b in binValue) {
+      for (var b in binValue.split('')) {
         // Pos '0:0' weil der Spielstein sich noch nicht im Spielfeld befindet
-        Field field = new Field(0, 0, b);
-        row.add(field);
+        bool status = b.startsWith('1');
+        field f = new field(0, 0, status);
+        row.add(f);
       }
       // Fügt die Zeile dem Tetriminofeld hinzu
-      field.add(row);
+      t_field.add(row);
     }
-
-    return field;
+    return t_field;
   }
+
 
   /// Bereitet den Spielstein für den Einsatz vor
-  void getReadyForUse(String color) {
-
+  List<List<field>> getReadyForUse(String color) {
+    // Wählt eine zufällige Ausrichtung und erstellt das Feld
     final random = new Random();
-    var hexAlignment = _hexAlignments[random.nextInt(_hexAlignments.length)];
+    _actAlignmentIndex = random.nextInt(_hexAlignments.length);
+    var hexAlignment = _hexAlignments[_actAlignmentIndex];
     _tetriminoField = _createFieldList(hexAlignment);
-    _setTetriminoColor(color);
+    // Setzt die Farbe und gibt das Tetriminofled zurück
+    return _setTetriminoColor(color);
   }
 
+
   /// Aktualisiert die neue Ausrichtung
-  List<List<Field>> _refreshAlignmentInFieldList(List<List<Field>> newField) {
+  List<List<field>> _refreshAlignmentInFieldList(List<List<field>> newField) {
 
     int x = 0;
-    for (List<Field> row in newField) {
+    for (List<field> row in newField) {
 
       int y = 0;
-      for (Field field in row) {
-        field.posX = _tetriminoField[x][y].posX;
-        field.posY = _tetriminoField[x][y].posY;
-        field.color = _tetriminoField[x][y].color;
+      for (field f in row) {
+        f.posX = _tetriminoField[x][y].posX;
+        f.posY = _tetriminoField[x][y].posY;
+        if (f.status) f.color = _color;
         y += 1;
       }
       x += 1;
@@ -72,12 +76,15 @@ class Tetrimino {
     return newField;
   }
 
+
   /// Setzt die Farbe des Spielsteines
-  List<List<Field>> _setTetriminoColor(String color) {
+  List<List<field>> _setTetriminoColor(String color) {
+
+    _color = color;
 
     // Durchläuft jedes Feld einer Zeile
-    for(List<Field> row in _tetriminoField) {
-      for(Field f in row) {
+    for(List<field> row in _tetriminoField) {
+      for(field f in row) {
         if(f.status) {
           f.color = color;
         }
@@ -87,8 +94,9 @@ class Tetrimino {
     return _tetriminoField;
   }
 
+
   /// Dreht den Spielstein nach links
-  List<List<Field>> rotateLeft() {
+  List<List<field>> rotateLeft() {
 
     _actAlignmentIndex == 0 ? _actAlignmentIndex = 3 : _actAlignmentIndex -= 1;
 
@@ -96,8 +104,9 @@ class Tetrimino {
     return _refreshAlignmentInFieldList(newField);
   }
 
+
   /// Dreht den Spielstein nach rechts
-  List<List<Field>> rotateRight() {
+  List<List<field>> rotateRight() {
 
     _actAlignmentIndex == 3 ? _actAlignmentIndex = 0 : _actAlignmentIndex += 1;
 
@@ -105,23 +114,25 @@ class Tetrimino {
     return _refreshAlignmentInFieldList(newField);
   }
 
-  /// Bewegt den Spielstein nach rechts
-  List<List<Field>> moveRight() {
 
-    for (List<Field> row in _tetriminoField) {
-      for (Field field in row) {
-        field.posX += 1;
+  /// Bewegt den Spielstein nach rechts
+  List<List<field>> moveRight() {
+
+    for (List<field> row in _tetriminoField) {
+      for (field f in row) {
+        f.posX += 1;
       }
     }
     return _tetriminoField;
   }
 
-  /// Bewegt den Spielstein nach links
-  List<List<Field>> moveLeft() {
 
-    for (List<Field> row in _tetriminoField) {
-      for (Field field in row) {
-        field.posX -= 1;
+  /// Bewegt den Spielstein nach links
+  List<List<field>> moveLeft() {
+
+    for (List<field> row in _tetriminoField) {
+      for (field f in row) {
+        f.posX -= 1;
       }
     }
     return _tetriminoField;
