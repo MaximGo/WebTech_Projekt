@@ -1,0 +1,9 @@
+Todo's:
+	- tetrismodel implementieren
+	- level implementieren
+
+
+Wichtig!
+	- Nach jeder Änderung das UML-Diagramm anpassen (Selbst wenn es nur eine Parameter ist)
+	- Beim Erstellen von gamedata, müssen die Spielfeldhöhe und -breite direkt gesetzt werden. und können
+	  nicht im Konstruktor übergeben werden, da Sie als 'const' deklariert sind.

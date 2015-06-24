@@ -3,8 +3,9 @@ part of tetris;
 /// Die Klasse [field] representiert ein einzelnes Feld des gesamten Tetris-Spielfeldes und des Tetriminofeldes
 class field {
 
+  // Setzt die Default-Farbe
+  String  _color = "rgba(255, 255, 255, 0.1)";
   bool    _status;
-  String  _color;
   int     _posX;
   int     _posY;
 
