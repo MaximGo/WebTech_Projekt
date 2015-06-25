@@ -21,7 +21,7 @@ class controller {
     _view = new tetrisview(this);
 
     // Liest die JSON-Datei ein
-    _model.loadData("");
+    _model.readJsonFileAndCreateData("Tetris.json");
     // Startet das Spiel
     var tetrisfield = _model._startGame();
     // Zeigt das Spielfeld in der View an
