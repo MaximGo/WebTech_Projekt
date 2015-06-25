@@ -214,8 +214,8 @@ class tetrismodel {
     }
     return true;
   }
-  
-  
+
+
   void loadData(String uri){
     var url = "Tetris.json";
     HttpRequest.getString(url).then(readJsonFileAndCreateData);
@@ -227,7 +227,7 @@ class tetrismodel {
   void readJsonFileAndCreateData(String responseText) {
 
     // TODO - Exception Abfangen, wenn es die URI nicht gibt
-
+    print(responseText);
     // Lädt die JSON-Datei
     Map json = JSON.decode(responseText);
 

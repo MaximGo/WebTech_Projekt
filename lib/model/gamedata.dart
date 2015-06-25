@@ -75,16 +75,16 @@ class gamedata {
         3 * currentLevel.factorForFourOrMoreRows * currentLevel.number;
     increaseSpeed();
   }
-  
+
   //Erhöht die Geschwindigkeit der Spielsteine wenn sie nicht schon am Maximum ist
   void increaseSpeed(){
     if(_tetriminoSpeed>maxSpeed) _tetriminoSpeed -= 10;
   }
 
   // Die Geschwindigkeit der Spielsteine (ms = Millisekunden)
-  int _tetriminoSpeed = 1000;
-  int get tetriminoSpeed => _tetriminoSpeed;
-  void set tetriminoSpeed(int s) {
+  static int _tetriminoSpeed = 1000;
+  static int get tetriminoSpeed => _tetriminoSpeed;
+  static void set tetriminoSpeed(int s) {
     _tetriminoSpeed = s;
   }
 
