@@ -55,6 +55,12 @@ class gamedata {
   String _message;
   String get message => _message;
   void set message(String msg) { _message = msg; }
+  
+/// Erhöht das Level sowie die Anzahl der Punkte zum Levelaufstieg
+void increaseLevel(){
+  currentLevel.number++;
+  currentLevel.pointsForNextLevel = 3*currentLevel.factorForFourOrMoreRows*currentLevel.number;
+}
 
 
   // Die Geschwindigkeit der Spielsteine (ms = Millisekunden)

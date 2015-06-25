@@ -18,8 +18,11 @@ class level {
 
   /// Getter für die Levelnummer
   int get number => _number;
+  void set number(int n) { _number = n; }
   /// Getter für die nötigen Punkte zum Levelaufstieg
   int get pointsForNextLevel => _pointsForNextLevel;
+  void set pointsForNextLevel(int l) { _pointsForNextLevel = l; }
+  int get factorForFourOrMoreRows => _factorForFourOrMoreRows;
 
 
   /// Gib die erhaltenen Punkte für eine aufgelöste Reihe zurück
@@ -34,10 +37,4 @@ class level {
     }
   }
 
-
-  /// Erhöht das Level sowie die Anzahl der Punkte zum Levelaufstieg
-  void increaseLevel(){
-    _number++;
-    _pointsForNextLevel = 3*_factorForFourOrMoreRows*_number;
-  }
 }
