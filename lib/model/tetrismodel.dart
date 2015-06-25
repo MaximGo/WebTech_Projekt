@@ -10,6 +10,7 @@ class tetrismodel {
   /// Erwartet eine Instanz des Controllers [_con].
   tetrismodel(this._con);
 
+
   ///Versucht den Tetrimino nach Links zu drehen, sollte das nicht klappen,
   ///wird er wieder zurückgedreht. Gilt für alle rotate und move Methoden.
   void rotateLeft() {
@@ -64,8 +65,7 @@ class tetrismodel {
 
       //aktueller wird auf nächsten Tetrimino gesetzt und der nächste holt sich einen Zufälligen.
       _data.currentTetrimino = _data.nextTetrimino;
-      _data.nextTetrimino =
-          _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
+      _data.nextTetrimino = _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
 
       // Checkt ob Reihen gelöscht wurden und falls ja, werden die Punkte berechnet
       int deletedRows = checkRows();
@@ -96,14 +96,9 @@ class tetrismodel {
   /// Startet das Spiel
   List<List<field>> _startGame() {
 
-    // Liest die JSON-Datei
-    // TODO - Serverpfad angeben
-    readJsonFileAndCreateData("/../../other/Tetris.json");
     // Holt sich den aktuellen und den nächsten Spielstein
-    _data.currentTetrimino =
-        _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
-    _data.nextTetrimino =
-        _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
+    _data.currentTetrimino = _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
+    _data.nextTetrimino = _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
     // Gibt das Spielfeld zur Ausgabe auf der View zurück
     return _data.tetrisField;
   }
@@ -138,7 +133,8 @@ class tetrismodel {
     return rowsDeleted;
   }
 
-  /// Prüft das ganze Tetrisfeld und lässt, in der luft schwebende Blöcke nachrücken
+
+  /// Prüft das ganze Tetrisfeld und lässt, in der Luft schwebende Blöcke nachrücken
   void rowMoveUp(List<List<field>> tetField) {
     for (int i = tetField.length - 2; i >= 0; i--) {
       for (int j = 0; j < tetField[i].length; j++) {
@@ -152,50 +148,58 @@ class tetrismodel {
     }
   }
 
-  /// Löscht eine übergebene Reihe
+
+  /// Löscht eine übergebene Reihe [row]
   void deleteRow(List<field> row) {
     for (field f in row) {
       f = new field(f.posX, f.posY, false);
     }
   }
 
-  void deleteTetrimino(List<List<field>> tetrimin) {
+
+  /// Entfernt einen Spielstein [tetrimino] aus der Spielfeldliste
+  void deleteTetrimino(List<List<field>> tetrimino) {
+
     // Holt sich das Spielfeld
     List<List<field>> checkField = _data.tetrisField;
-    // Durchläuft jedes Zeile des Steines
-    for (List<field> row in tetrimin) {
-      // Durchläuft jedes Feld vom Stein
+    // Durchläuft jedes Zeile und jedes Feld des Steines
+    for (List<field> row in tetrimino) {
       for (field f in row) {
-        if (f.status) checkField[f.posX][f.posY] =
-            new field(f.posX, f.posY, false);
+        if (f.status)
+          checkField[f.posX][f.posY] = new field(f.posX, f.posY, false);
       }
     }
   }
 
-  bool integrateTetrimino(List<List<field>> tetrimin) {
-    bool spielEnde;
+
+  /// Fügt einen Spielstein [tetrimino] der Spielfeldliste hinzu
+  /// und ermittelt ob das Spiel beendet ist
+  bool integrateTetrimino(List<List<field>> tetrimino) {
+
     // Holt sich das Spielfeld
     List<List<field>> checkField = _data.tetrisField;
-    // Durchläuft jedes Zeile des Steines
-    for (List<field> row in tetrimin) {
-      // Durchläuft jedes Feld vom Stein
+
+    // Durchläuft jede Zeile und jedes Feld des Steines
+    for (List<field> row in tetrimino) {
       for (field f in row) {
         if (!(f.posY < 0)) checkField[f.posX][f.posY] = f;
-        else spielEnde = true;
+        else _data.gameEnd = true;
       }
     }
-    _con.pushField();
-    return spielEnde;
+    // TODO - Spielfeld an den Controller zur Ausgabe weiterleiten
+    return _data.gameEnd;
   }
 
-  bool checkTetriminoPosition(List<List<field>> tetrimin) {
+
+  /// Prüft ob sich der Spielstein [tetrimino] in einem gültigen Feld befindet
+  /// oder sich auf einen anderen Spielstein setzt
+  bool checkTetriminoPosition(List<List<field>> tetrimino) {
 
     // Holt sich das Spielfeld
     List<List<field>> checkField = _data.tetrisField;
 
-    // Durchläuft jedes Zeile des Steines
-    for (List<field> row in tetrimin) {
-      // Durchläuft jedes Feld vom Stein
+    // Durchläuft jedes Zeile und jedes Feld vom Stein
+    for (List<field> row in tetrimino) {
       for (field f in row) {
         //check ob der Stein rechts, links oder unten mit einer Wand kollidiert
         if (f.status) {
@@ -208,13 +212,15 @@ class tetrismodel {
         }
       }
     }
-
     return true;
   }
 
-  /// Liest das json File aus und erstellt der Reihe nach Tetriminos, level,
+
+  /// Liest das JSON-File der [uri] aus und erstellt der Reihe nach Tetriminos, level,
   /// gamedata und befüllt das Feld.
   void readJsonFileAndCreateData(String uri) {
+
+    // TODO - Exception Abfangen, wenn es die URI nicht gibt
 
     // Lädt die JSON-Datei
     File file = new File(uri);
@@ -239,6 +245,7 @@ class tetrismodel {
     _createGameData(t, l, spielfeld["Hoehe"], spielfeld["Breite"]);
   }
 
+
   /// Füllt die GameData-Klasse mit Daten
   /// Benötigt dazu die geladenen Tetriminos [tetriminoList], die Levelbasis [lev], sowie die
   /// Höhe [tHeight] und Breite [tWidth] des Spielfeldes
@@ -253,6 +260,7 @@ class tetrismodel {
     _data.currentLevel = lev;
     _data.tetrisField = _createFieldList(tHeight, tWidth);
   }
+
 
   /// Erstellt das Spielfeld und bildet es in einer Liste ab
   /// Benötigt dazu die Höhe [height] und Breite [width] des Spielfeldes

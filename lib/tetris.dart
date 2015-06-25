@@ -4,6 +4,7 @@ library tetris;
 import 'dart:math';
 import 'dart:io';
 import 'dart:convert';
+import 'dart:html';
 
 // Part der Klassen
 part 'model/tetriminos.dart';

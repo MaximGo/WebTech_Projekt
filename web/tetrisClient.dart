@@ -1,4 +1,4 @@
 import 'package:tetris/tetris.dart';
 
-// TODO - Run Main-function angeben
-main() => null;
+// Erzeugt eine neue Instanz der controller Klasse
+main() => new controller();
