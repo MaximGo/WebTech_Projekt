@@ -24,9 +24,7 @@ body {
 }
 
 /* Vordefinierten Farben der Steine */
-#blue-stone {
-	background-color: blue !important;
-}
-#yellow-stone {
-	background-color: yellow !important;
-}
+#blue { background-color: blue !important; }
+#yellow { background-color: yellow !important; }
+#red { background-color: red !important; }
+#green { background-color: green !important; }

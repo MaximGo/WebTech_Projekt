@@ -4,7 +4,7 @@ part of tetris;
 class field {
 
   // Setzt die Default-Farbe
-  String  _color = "rgba(255, 255, 255, 0.1)";
+  String  _color = "default";
   bool    _status;
   int     _posX;
   int     _posY;
