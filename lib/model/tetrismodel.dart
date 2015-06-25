@@ -214,17 +214,22 @@ class tetrismodel {
     }
     return true;
   }
+  
+  
+  void loadData(String uri){
+    var url = "Tetris.json";
+    HttpRequest.getString(url).then(readJsonFileAndCreateData);
+  }
 
 
   /// Liest das JSON-File der [uri] aus und erstellt der Reihe nach Tetriminos, level,
   /// gamedata und befüllt das Feld.
-  void readJsonFileAndCreateData(String uri) {
+  void readJsonFileAndCreateData(String responseText) {
 
     // TODO - Exception Abfangen, wenn es die URI nicht gibt
 
     // Lädt die JSON-Datei
-    File file = new File(uri);
-    Map json = JSON.decode(file.readAsStringSync());
+    Map json = JSON.decode(responseText);
 
     // Liest die Tetriminosteine
     tetriminos t = new tetriminos();
