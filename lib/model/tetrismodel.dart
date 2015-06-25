@@ -4,6 +4,7 @@ part of tetris;
 class tetrismodel {
   gamedata _data;
   controller _con;
+  int _rotaLock = 0;
 
   /// Konstruktor der Klasse tetrismodel.
   /// Erwartet eine Instanz des Controllers [_con].
@@ -12,6 +13,8 @@ class tetrismodel {
   ///Versucht den Tetrimino nach Links zu drehen, sollte das nicht klappen,
   ///wird er wieder zurückgedreht. Gilt für alle rotate und move Methoden.
   void rotateLeft() {
+    // Sperre die Rotation, falls zehn Züge keine Reihe mehr gelöscht wurde
+    if (_rotaLock == 10) return;
     tetrimino current = _data.currentTetrimino;
     if (!checkTetriminoPosition(current.rotateLeft())) {
       current.rotateRight();
@@ -22,6 +25,8 @@ class tetrismodel {
   }
 
   void rotateRight() {
+    // Sperre die Rotation, falls zehn Züge keine Reihe mehr gelöscht wurde
+    if (_rotaLock == 10) return;
     tetrimino current = _data.currentTetrimino;
     if (!checkTetriminoPosition(current.rotateRight())) {
       current.rotateLeft();
@@ -61,9 +66,30 @@ class tetrismodel {
       _data.currentTetrimino = _data.nextTetrimino;
       _data.nextTetrimino =
           _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
+
+      // Checkt ob Reihen gelöscht wurden und falls ja, werden die Punkte berechnet
+      int deletedRows = checkRows();
+      if (deletedRows > 0) {
+        calculateRowElimination(deletedRows);
+        // Resetet den Rotrationsblock Counter
+        _rotaLock = 0;
+      } else {
+        // Erhöht den Counter, es sei denn er ist schon bei 10, dann wird er wieder resetet
+        if (_rotaLock < 10) _rotaLock++;
+        else _rotaLock = 0;
+      }
     } else {
       integrateTetrimino(current.tetriminoField);
       deleteTetrimino(current.tetriminoField);
+    }
+  }
+
+  /// Berechnet die Punkte die es für das löschen von Reihen gibt
+  void calculateRowElimination(int solvedRows) {
+    level l = _data._currentLevel;
+    _data.addPoints(l.getPointsForSolvedRows(solvedRows));
+    if (_data.points >= l.pointsForNextLevel) {
+      _data.increaseLevel();
     }
   }
 
@@ -89,6 +115,50 @@ class tetrismodel {
     String msg = message["go"];
   }
 
+  /// Prüft auf gelöschte Reihen
+  int checkRows() {
+    int rowsDeleted = 0;
+    List<List<field>> tetField = _data.tetrisField;
+    int piecesInTheRightPlace = 0;
+    for (int i = tetField.length - 1; i >= 0; i--) {
+      for (int j = 0; j < tetField[i].length; j++) {
+        if (tetField[i][j].status) piecesInTheRightPlace++;
+      }
+      // Ist kein einziger Stein mehr in der Reihe wird hier abgebrochen
+      if (piecesInTheRightPlace == 0) return rowsDeleted;
+      // Ist die Reihe voll so wird sie gelöscht. Ist sies nicht rückt sie nach.
+      if (piecesInTheRightPlace == gamedata.tetrisFieldWidth) {
+        deleteRow(tetField[i]);
+        rowsDeleted++;
+      } else {
+        rowMoveUp(tetField);
+      }
+      piecesInTheRightPlace = 0;
+    }
+    return rowsDeleted;
+  }
+
+  /// Prüft das ganze Tetrisfeld und lässt, in der luft schwebende Blöcke nachrücken
+  void rowMoveUp(List<List<field>> tetField) {
+    for (int i = tetField.length - 2; i >= 0; i--) {
+      for (int j = 0; j < tetField[i].length; j++) {
+        // Ist das aktuelle Feld belegt und das darunter nicht, dann versetze
+        // das aktuelle Feld nach unten
+        if (!(tetField[i + 1][j].status) && tetField[i][j].status) {
+          tetField[i][j] = tetField[i + 1][j];
+          tetField[i + 1][j] = new field(i, j, false);
+        }
+      }
+    }
+  }
+
+  /// Löscht eine übergebene Reihe
+  void deleteRow(List<field> row) {
+    for (field f in row) {
+      f = new field(f.posX, f.posY, false);
+    }
+  }
+
   void deleteTetrimino(List<List<field>> tetrimin) {
     // Holt sich das Spielfeld
     List<List<field>> checkField = _data.tetrisField;
@@ -97,7 +167,7 @@ class tetrismodel {
       // Durchläuft jedes Feld vom Stein
       for (field f in row) {
         if (f.status) checkField[f.posX][f.posY] =
-            new field(f.posX, f._posY, false);
+            new field(f.posX, f.posY, false);
       }
     }
   }
@@ -128,12 +198,14 @@ class tetrismodel {
       // Durchläuft jedes Feld vom Stein
       for (field f in row) {
         //check ob der Stein rechts, links oder unten mit einer Wand kollidiert
-        if (f.posX >= gamedata.tetrisFieldWidth ||
-            f.posX < gamedata.tetrisFieldWidth ||
-            f.posY >= gamedata.tetrisFieldHeight) return false;
+        if (f.status) {
+          if (f.posX >= gamedata.tetrisFieldWidth ||
+              f.posX < gamedata.tetrisFieldWidth ||
+              f.posY >= gamedata.tetrisFieldHeight) return false;
 
-        //check ob der Stein mit einem anderen Tetrimino kollidiert
-        if (checkField[f.posX][f.posY].status && f.status) return false;
+          //check ob der Stein mit einem anderen Tetrimino kollidiert
+          if (checkField[f.posX][f.posY].status) return false;
+        }
       }
     }
 

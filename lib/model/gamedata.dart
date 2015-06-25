@@ -68,7 +68,7 @@ class gamedata {
     _message = msg;
   }
 
-/// Erhöht das Level sowie die Anzahl der Punkte zum Levelaufstieg
+  // Erhöht das Level sowie die Anzahl der Punkte zum Levelaufstieg
   void increaseLevel() {
     currentLevel.number++;
     currentLevel.pointsForNextLevel =
@@ -76,6 +76,7 @@ class gamedata {
     increaseSpeed();
   }
   
+  //Erhöht die Geschwindigkeit der Spielsteine wenn sie nicht schon am Maximum ist
   void increaseSpeed(){
     if(_tetriminoSpeed>maxSpeed) _tetriminoSpeed -= 10;
   }
@@ -92,6 +93,9 @@ class gamedata {
   int get points => _points;
   void set points(int p) {
     _points = p;
+  }
+  void addPoints(int p){
+    _points+=p;
   }
 
   // Merkt sich den Spielstatus
