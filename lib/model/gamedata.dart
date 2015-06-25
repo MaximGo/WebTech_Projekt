@@ -9,11 +9,6 @@ final Map<String, String> message = {
 /// Reine Datenklasse für die Datenhaltung des Tetrismodels
 class gamedata {
 
-  /// Konstruktor der Klasse gamedata
-  /// Benötigt die Liste der Tetriminosteine [_tetriminoList] sowie ein Levelstart [_currentLevel].
-  /// Die Breite [_tetrisFieldWidth] und Höhe [_tetrisFieldHeight] müssen statisch über die Klasse gesetzt werden.
-  gamedata(this._tetriminoList, this._currentLevel);
-
   // Die Breite des Spielfeldes (statisch)
   static int _tetrisFieldWidth = 0;
   static int get tetrisFieldWidth => _tetrisFieldWidth;
@@ -35,6 +30,7 @@ class gamedata {
   // Liste der verfügbaren Tetriminos
   tetriminos _tetriminoList;
   tetriminos get tetriminoList => _tetriminoList;
+  void set tetriminoList(tetriminos t) { _tetriminoList = t; }
 
 
   // Merkt sich den aktuellen Tetrimino
@@ -76,9 +72,7 @@ class gamedata {
   // Merkt sich den Spielstatus
   bool _gameEnd = false;
   bool get gameEnd => _gameEnd;
-  void set gameEnd(bool ge) {
-    _gameEnd = ge;
-  }
+  void set gameEnd(bool ge) { _gameEnd = ge; }
 
   // Die möglichen Farben der Spielsteine
   List<String> _colorList = ["red", "blue", "yellow", "green"];
