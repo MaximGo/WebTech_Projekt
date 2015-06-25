@@ -1,6 +1,6 @@
 {
   "Spielfeld": {
-    "Laenge": 20,
+    "Hoehe": 20,
     "Breite": 10
   },
   "Tetriminos": {

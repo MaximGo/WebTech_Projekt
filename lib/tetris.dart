@@ -2,6 +2,8 @@ library tetris;
 
 // Import der verwendeten Bibliotheken
 import 'dart:math';
+import 'dart:io';
+import 'dart:convert';
 
 // Part der Klassen
 part 'model/tetriminos.dart';

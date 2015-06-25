@@ -158,4 +158,16 @@ class tetrimino {
     }
     return _tetriminoField;
   }
+  
+  
+/// Bewegt den Spielstein um ein Feld nach oben
+List<List<field>> moveUp() {
+
+  for (List<field> row in _tetriminoField) {
+    for (field f in row) {
+      f.posY -= 1;
+    }
+  }
+  return _tetriminoField;
+}
 }
