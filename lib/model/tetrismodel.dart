@@ -42,6 +42,10 @@ class tetrismodel {
         for (field tetF in rowField) {
           for (List<field> row in current) {
             for (field f in row) {
+              ///Sollte der Tetrimino den Boden erreicht haben während er noch nicht ganz
+              ///aus der "Decke" rausgefallen ist, heißt das Game Over.
+              if(f.posY<0) _stopGame;
+              
               if (f.posX == tetF.posX && f.posY == tetF.posY) {
                 tetF = f;
               }
