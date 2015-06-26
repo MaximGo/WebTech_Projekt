@@ -167,7 +167,7 @@ class tetrismodel {
       for (field f in row) {
         if (f.status)
           if (f._posY >= 0)
-          checkField[f.posX][f.posY] = new field(f.posX, f.posY, false);
+          checkField[f.posY][f.posX] = new field(f.posX, f.posY, false);
       }
     }
   }
@@ -183,11 +183,11 @@ class tetrismodel {
     // Durchläuft jede Zeile und jedes Feld des Steines
     for (List<field> row in tetrimino) {
       for (field f in row) {
-        if (!(f.posY < 0)) checkField[f.posX][f.posY] = f;
+        if (!(f.posY < 0)) checkField[f.posY][f.posX] = f;
         else _data.gameEnd = true;
       }
     }
-    // TODO - Spielfeld an den Controller zur Ausgabe weiterleiten
+    _con.showTetrisfield(checkField);
     return _data.gameEnd;
   }
 
@@ -208,9 +208,9 @@ class tetrismodel {
               f.posX < 0 ||
               f.posY >= gamedata.tetrisFieldHeight) return false;
 
-          if(f._posY >= 0) {
+          if(f.posY >= 0) {
             //check ob der Stein mit einem anderen Tetrimino kollidiert
-            if (checkField[f.posX][f.posY].status) return false;
+            if (checkField[f.posY][f.posX].status) return false;
           }
         }
       }
