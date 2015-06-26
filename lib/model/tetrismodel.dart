@@ -216,19 +216,15 @@ class tetrismodel {
   }
 
 
-  //void loadData(String uri){
-  //  var url = "Tetris.json";
-  //  print(url);
-  //  HttpRequest.getString(url).then(readJsonFileAndCreateData);
-  //}
+  Future loadData(){
+    var url = "Tetris.json";
+    HttpRequest.getString(url).then(readJsonFileAndCreateData);
+  }
 
 
   /// Liest das JSON-File der [uri] aus und erstellt der Reihe nach Tetriminos, level,
   /// gamedata und befüllt das Feld.
-  Future readJsonFileAndCreateData(String uri) async{
-    String responseText = await(HttpRequest.getString(uri));
-    // TODO - Exception Abfangen, wenn es die URI nicht gibt
-    print(responseText);
+  void readJsonFileAndCreateData(String responseText) {
     // Lädt die JSON-Datei
     Map json = JSON.decode(responseText);
 
@@ -249,6 +245,7 @@ class tetrismodel {
 
     // Erstellt die gamedata
     _createGameData(t, l, spielfeld["Hoehe"], spielfeld["Breite"]);
+    _con.startGame();
   }
 
 

@@ -19,15 +19,18 @@ class controller {
     _model = new tetrismodel(this);
     // Erzeugt eine Instanz der Viewschnittstelle
     _view = new tetrisview(this);
-
     // Liest die JSON-Datei ein
-    _model.readJsonFileAndCreateData("Tetris.json");
-    // Startet das Spiel
-    var tetrisfield = _model._startGame();
-    // Zeigt das Spielfeld in der View an
-    showTetrisfield(tetrisfield);
-    // Startet den Timer
-    moveTimer = new Timer.periodic(const Duration(milliseconds: 1000), (_) => _moveTetrimino());
+    _model.loadData();
+  }
+
+
+  void startGame() {
+     // Startet das Spiel
+     var tetrisfield = _model._startGame();
+     // Zeigt das Spielfeld in der View an
+     showTetrisfield(tetrisfield);
+     // Startet den Timer
+     moveTimer = new Timer.periodic(const Duration(milliseconds: 1000), (_) => _moveTetrimino());
   }
 
 
@@ -39,7 +42,5 @@ class controller {
 
 
   /// Wird von dem Timer angesteuert, wenn der Spielstein bewegt werden soll
-  void _moveTetrimino() {
-
-  }
+  void _moveTetrimino() { _model.moveDown(); }
 }
