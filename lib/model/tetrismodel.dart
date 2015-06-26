@@ -183,7 +183,7 @@ class tetrismodel {
     // Durchläuft jede Zeile und jedes Feld des Steines
     for (List<field> row in tetrimino) {
       for (field f in row) {
-        if (!(f.posY < 0)) checkField[f.posY][f.posX] = f;
+        if (!(f.posY < 0) && f.status) checkField[f.posY][f.posX] = f;
         else _data.gameEnd = true;
       }
     }
