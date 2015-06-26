@@ -166,6 +166,7 @@ class tetrismodel {
     for (List<field> row in tetrimino) {
       for (field f in row) {
         if (f.status)
+          if (f._posY >= 0)
           checkField[f.posX][f.posY] = new field(f.posX, f.posY, false);
       }
     }
@@ -204,11 +205,13 @@ class tetrismodel {
         //check ob der Stein rechts, links oder unten mit einer Wand kollidiert
         if (f.status) {
           if (f.posX >= gamedata.tetrisFieldWidth ||
-              f.posX < gamedata.tetrisFieldWidth ||
+              f.posX < 0 ||
               f.posY >= gamedata.tetrisFieldHeight) return false;
 
-          //check ob der Stein mit einem anderen Tetrimino kollidiert
-          if (checkField[f.posX][f.posY].status) return false;
+          if(f._posY >= 0) {
+            //check ob der Stein mit einem anderen Tetrimino kollidiert
+            if (checkField[f.posX][f.posY].status) return false;
+          }
         }
       }
     }
