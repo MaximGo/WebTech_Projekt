@@ -77,8 +77,8 @@ class gamedata {
   }
 
   //Erhöht die Geschwindigkeit der Spielsteine wenn sie nicht schon am Maximum ist
-  void increaseSpeed(){
-    if(_tetriminoSpeed>maxSpeed) _tetriminoSpeed -= 10;
+  void increaseSpeed() {
+    if (_tetriminoSpeed > maxSpeed) _tetriminoSpeed -= 10;
   }
 
   // Die Geschwindigkeit der Spielsteine (ms = Millisekunden)
@@ -94,8 +94,8 @@ class gamedata {
   void set points(int p) {
     _points = p;
   }
-  void addPoints(int p){
-    _points+=p;
+  void addPoints(int p) {
+    _points += p;
   }
 
   // Merkt sich den Spielstatus

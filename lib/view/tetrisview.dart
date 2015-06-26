@@ -8,6 +8,9 @@ class tetrisview {
   // Element mit der id '#tetrisfield' vom DOM tree zum Setzen des Spielfeldes
   final tetrisfield = querySelector("#tetrisfield");
 
+  // Element mit der id '#tetrisfield' vom DOM tree zum Setzen des Spielfeldes
+  final nextTetrimino = querySelector("#nextstone");
+
 
   /// Der Konstruktor der [tetrisview].
   /// Erwartet zur Kommunikation die Instanz der controller-Klasse [_con].
@@ -17,6 +20,11 @@ class tetrisview {
   /// Aktualisiert das Spielfeld [t] im DOM tree
   void refreshTetrisField(List<List<field>> t) {
     tetrisfield.innerHtml = _tetrisfieldToHTMLTable(t);
+  }
+
+
+  void refreshNextTetrimino(List<List<field>> t) {
+    nextTetrimino.innerHtml = _tetrisfieldToHTMLTable(t);
   }
 
 

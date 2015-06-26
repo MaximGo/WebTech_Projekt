@@ -20,7 +20,7 @@ class controller {
     // Erzeugt eine Instanz der Viewschnittstelle
     _view = new tetrisview(this);
     // Liest die JSON-Datei ein
-    _model.loadData();
+    _model.loadData("resc/Tetris.json");
   }
 
 
@@ -30,7 +30,19 @@ class controller {
      // Zeigt das Spielfeld in der View an
      showTetrisfield(tetrisfield);
      // Startet den Timer
-     moveTimer = new Timer.periodic(const Duration(milliseconds: 1000), (_) => _moveTetrimino());
+     // TODO - Speed aus der gamedata auslesen
+     moveTimer = new Timer.periodic(const Duration(milliseconds: 700), (_) => _moveTetrimino());
+
+    // Steering of the snake
+      window.onKeyDown.listen((KeyboardEvent ev) {
+
+        switch (ev.keyCode) {
+          case KeyCode.LEFT:  _model.moveLeft(); break;
+          case KeyCode.RIGHT:  _model.moveRight(); break;
+          case KeyCode.DOWN: _model.rotateLeft(); break;
+          case KeyCode.UP: _model.rotateRight(); break;
+        }
+      });
   }
 
 
@@ -38,6 +50,10 @@ class controller {
   /// Erwartet das Spielfeld [t].
   void showTetrisfield(List<List<field>> t) {
     _view.refreshTetrisField(t);
+  }
+
+  void showNextTetrimino(List<List<field>> t) {
+    _view.refreshNextTetrimino(t);
   }
 
 

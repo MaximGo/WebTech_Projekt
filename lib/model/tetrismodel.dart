@@ -82,6 +82,8 @@ class tetrismodel {
       integrateTetrimino(current.tetriminoField);
       deleteTetrimino(current.tetriminoField);
     }
+
+     _con.showNextTetrimino(_data.nextTetrimino.tetriminoField);
   }
 
   /// Berechnet die Punkte die es für das löschen von Reihen gibt
@@ -112,6 +114,7 @@ class tetrismodel {
 
   /// Prüft auf gelöschte Reihen
   int checkRows() {
+    bool atleastOne = false;
     int rowsDeleted = 0;
     List<List<field>> tetField = _data.tetrisField;
     int piecesInTheRightPlace = 0;
@@ -124,8 +127,9 @@ class tetrismodel {
       // Ist die Reihe voll so wird sie gelöscht. Ist sies nicht rückt sie nach.
       if (piecesInTheRightPlace == gamedata.tetrisFieldWidth) {
         deleteRow(tetField[i]);
+        atleastOne = true;
         rowsDeleted++;
-      } else {
+      } else if(atleastOne) {
         rowMoveUp(tetField);
       }
       piecesInTheRightPlace = 0;
@@ -219,9 +223,8 @@ class tetrismodel {
   }
 
 
-  Future loadData(){
-    var url = "Tetris.json";
-    HttpRequest.getString(url).then(readJsonFileAndCreateData);
+  Future loadData(String uri){
+    HttpRequest.getString(uri).then(readJsonFileAndCreateData);
   }
 
 
@@ -230,6 +233,9 @@ class tetrismodel {
   void readJsonFileAndCreateData(String responseText) {
     // Lädt die JSON-Datei
     Map json = JSON.decode(responseText);
+
+    // Ausgabe der Datei in der Console
+    print(responseText);
 
     // Liest die Tetriminosteine
     tetriminos t = new tetriminos();
