@@ -1,16 +1,53 @@
-body {
-	background-color: black;
-	color: white;
-	text-align: center;
+html,body {
+  margin: 0px;
+  height: 100%;
+  color: white;
+  background-color: black;
+  text-align: center;
+}
+
+.welcome {
+  height: 100%;
+  width: 100%;
+  background-image: url("/resc/StartBackground.png");
+  background-size: cover;
+  color: white;
+  font-weight: bold;
+}
+.welcome.close { display: none; }
+
+#startText {
+  position:absolute;
+  width: 1000px;
+  margin-left:-500px;
+  left:50%;
+  bottom: 260px;
+  letter-spacing: 3px;
+  font-family: impact;
+  font-size: 50px;
+}
+
+#startButton {
+  border: 5px solid gray;
+  border-radius: 17px;
+  cursor: pointer;
+  position: absolute;
+  width: 150px;
+  margin-left: -75px;
+  left: 50%;
+  bottom: 150px;
+  font-size: 30px;
 }
 
 #layout {
-	margin: 40px auto;
+  display: none;
+  margin: 40px auto;
 }
+#layout.show { display: table; }
 
 #tetrisfield, #nextstone {
-	border-collapse: separate;
-	border: 10px solid gray;
+  border-collapse: separate;
+  border: 10px solid gray;
 }
 
 #nextstone {

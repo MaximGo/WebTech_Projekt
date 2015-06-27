@@ -2,7 +2,7 @@ part of tetris;
 
 // Die möglichen Nachrichten, die dem Benutzer angezeigt werden
 final Map<String, String> message = {
-  'gs': 'Bitte drücken Sie auf den Startknopf um das Spiel zu starten.',
+  'gs': 'Willkommen bei TETRIS',
   'go': 'Oooh Nein! Sie haben Leider Verloren :('
 };
 

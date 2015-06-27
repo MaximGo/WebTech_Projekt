@@ -19,8 +19,17 @@ class controller {
     _model = new tetrismodel(this);
     // Erzeugt eine Instanz der Viewschnittstelle
     _view = new tetrisview(this);
-    // Liest die JSON-Datei ein
-    _model.loadData("resc/Tetris.json");
+
+    _view.setWelcomeText(message['gs']);
+
+    // New game is started by user
+     _view.startButton.onClick.listen((_) {
+
+      // Liest die JSON-Datei ein
+      _model.loadData("resc/Tetris.json");
+        _view.welcomePage.classes.toggle('close');
+        _view.test.classes.toggle('show');
+     });
   }
 
 

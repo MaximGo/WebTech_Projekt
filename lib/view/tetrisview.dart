@@ -5,17 +5,29 @@ class tetrisview {
   // Schnittstelle zu dem Controller
   controller _con;
 
+  final _startText = querySelector("#startText");
+
   // Element mit der id '#tetrisfield' vom DOM tree zum Setzen des Spielfeldes
   final tetrisfield = querySelector("#tetrisfield");
 
   // Element mit der id '#tetrisfield' vom DOM tree zum Setzen des Spielfeldes
   final nextTetrimino = querySelector("#nextstone");
 
+  final welcomePage = querySelector(".welcome");
+
+  final test = querySelector("#layout");
+
+  // Startbutton der WelcomeSeite
+  HtmlElement get startButton => querySelector('#startButton');
+
 
   /// Der Konstruktor der [tetrisview].
   /// Erwartet zur Kommunikation die Instanz der controller-Klasse [_con].
   tetrisview(_con);
 
+  void setWelcomeText(String msg) {
+    _startText.innerHtml = msg;
+  }
 
   /// Aktualisiert das Spielfeld [t] im DOM tree
   void refreshTetrisField(List<List<field>> t) {
