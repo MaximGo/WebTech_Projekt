@@ -1,71 +1,37 @@
-<!DOCTYPE html>
-
-<!--
-  Copyright (c) 2015, <Max Golubew, Antonia Berg & Berengar Doege>. All rights reserved. Use of this source code
-  is governed by a BSD-style license that can be found in the LICENSE file.
--->
-
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="scaffolded-by" content="https://github.com/google/stagehand">
-    <title>Tetris</title>
-    <link rel="stylesheet" href="styles/main.css">
-  </head>
+	<head>
+  	  <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Tetris</title>
+      <link rel="stylesheet" href="styles/main.css">
+	</head>
+	<body>
+  	    <!-- Container für die Startseite -->
+        <div class="con_start">
+          <p id="startText"></p>
+          <p id="startButton">START</p>
+        </div>
 
-  <body>
-    <div class="welcome">
-      <span id="startText"></span>
-      <span id="startButton">START</span>
-    </div>
+          <!-- Container für die Nachrichten -->
+        <div class="con_msg">
+          <p id="msg"></p>
+        </div>
 
-    <div class="container">
-      <table id="layout">
-        <tr>
-          <td>
-            <table id="tetrisfield"></table>
-          </td>
-          <td>
-            <p>Nächster Stein</p>
-            <table id="nextstone">
-              <tbody>
-                <tr>
-                  <td x="0" y="0"></td>
-                  <td x="0" y="1"></td>
-                  <td x="0" y="2"></td>
-                  <td x="0" y="3"></td>
-                </tr>
-                <tr>
-                  <td x="1" y="0"></td>
-                  <td x="1" y="1" id="yellow-stone"></td>
-                  <td x="1" y="2" id="yellow-stone"></td>
-                  <td x="1" y="3"></td>
-                </tr>
-                <tr>
-                  <td x="2" y="0"></td>
-                  <td x="2" y="1" id="yellow-stone"></td>
-                  <td x="2" y="2" id="yellow-stone"></td>
-                  <td x="2" y="3"></td>
-                </tr>
-                <tr>
-                  <td x="3" y="0"></td>
-                  <td x="3" y="1"></td>
-                  <td x="3" y="2"></td>
-                  <td x="3" y="3"></td>
-                </tr>
-              </tbody>
-            </table>
-            <div>
-              <p>Score: 500</p>
-              <p>Level: 3</p>
-            </div>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <script type="application/dart" src="tetrisClient.dart"></script>
-    <script data-pub-inline src="packages/browser/dart.js"></script>
-  </body>
+        <div class="con_game">
+          <!-- Container für das Spielfeld -->
+          <div id="field"></div>
+
+          <!-- Container für den nächsten Stein -->
+          <div id="nextstone"></div>
+
+          <!-- Container für die Spielinformationen -->
+          <div id="info">
+            <p id="level">Level: 12</p>
+            <p id="points">Punkte: 500</p>
+          </div>
+        </div>
+
+        <script type="application/dart" src="tetrisClient.dart"></script>
+        <script data-pub-inline src="packages/browser/dart.js"></script>
+	</body>
 </html>

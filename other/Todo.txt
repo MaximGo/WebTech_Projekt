@@ -1,0 +1,12 @@
+level.dart:
+	- hat die Methode 'increaseLevel(int points)'. Dafür ist die Klasse da, um die Leveleigenschaften zu verwalten.
+
+tatrismodel:
+	- increaseLevel() & increaseSpeed() von gamedate nach tetrismodel verschoben. Grund: in gamedata soll gar keine Logik sein, sodern nur Getter & Setter. Die 2 Methoden müssen noch ausgebaut werden.
+	- Volle Reihen werden nicht ausgewertet
+	- Ab und zu kommt es vor, dass der nächst kommende Stein 2x nacheindander wechselt
+	- Wenn die Exceptions behoben sind, muss aufjedenfall im Model refactort werden.
+
+Tetris.json:
+	- Spielfeldgröße rausgenommen. Grund: Wenn wir die Spielfeldgröße dynamisch angeben, so muss unser HTML auch dynamisch aufgebaut werden. Da wir aber leider keine externen Libarys benutzen dürfe, ist es eher schwer ein eigenes responsive design aufzubauen. Deshalb finde ich, dass wir die Größe lieber constant lassen.
+	- Im Json müssen wir noch die einzelnen Tetriminos nach Levels ordnen. Sodass die schwierigeren Tetriminos auch erst in den höheren Levels kommen. Dies muss dann natürlich auch geparst werden.

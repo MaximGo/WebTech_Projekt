@@ -83,20 +83,20 @@ class tetrismodel {
       deleteTetrimino(current.tetriminoField);
     }
 
-     _con.showNextTetrimino(_data.nextTetrimino.tetriminoField);
+     _con.refreshNextTetrimino(_data.nextTetrimino.tetriminoField);
   }
 
   /// Berechnet die Punkte die es für das löschen von Reihen gibt
   void calculateRowElimination(int solvedRows) {
     level l = _data._currentLevel;
-    _data.addPoints(l.getPointsForSolvedRows(solvedRows));
+    _data.points = l.getPointsForSolvedRows(solvedRows);
     if (_data.points >= l.pointsForNextLevel) {
-      _data.increaseLevel();
+      //_data.increaseLevel();
     }
   }
 
   /// Startet das Spiel
-  List<List<field>> _startGame() {
+  List<List<field>> startGame() {
 
     // Holt sich den aktuellen und den nächsten Spielstein
     _data.currentTetrimino = _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
@@ -191,7 +191,7 @@ class tetrismodel {
         else _data.gameEnd = true;
       }
     }
-    _con.showTetrisfield(checkField);
+    _con.refreshTetrisField(checkField);
     return _data.gameEnd;
   }
 
@@ -249,11 +249,8 @@ class tetrismodel {
     level l = new level(1, lev["LevelAufstieg"], lev["Reihe1"], lev["Reihe2"],
         lev["Reihe3"], lev["Reihe4"]);
 
-    // Liest die Spielfelddaten
-    Map spielfeld = json["Spielfeld"];
-
     // Erstellt die gamedata
-    _createGameData(t, l, spielfeld["Hoehe"], spielfeld["Breite"]);
+    _createGameData(t, l);
     _con.startGame();
   }
 
@@ -262,15 +259,13 @@ class tetrismodel {
   /// Benötigt dazu die geladenen Tetriminos [tetriminoList], die Levelbasis [lev], sowie die
   /// Höhe [tHeight] und Breite [tWidth] des Spielfeldes
   void _createGameData(
-      tetriminos tetriminoList, level lev, int tHeight, int tWidth) {
+      tetriminos tetriminoList, level lev) {
 
     // Erzeugt eine neue Instanz der gamedata und füllt diese mit den nötigen Daten
     _data = new gamedata();
-    gamedata.tetrisFieldHeight = tHeight;
-    gamedata.tetrisFieldWidth = tWidth;
     _data.tetriminoList = tetriminoList;
     _data.currentLevel = lev;
-    _data.tetrisField = _createFieldList(tHeight, tWidth);
+    _data.tetrisField = _createFieldList(gamedata.tetrisFieldHeight, gamedata.tetrisFieldWidth);
   }
 
 
@@ -287,5 +282,18 @@ class tetrismodel {
       fieldList.add(row);
     }
     return fieldList;
+  }
+
+
+
+  // Erhöht das Level sowie die Anzahl der Punkte zum Levelaufstieg
+  void increaseLevel() {
+
+    //increaseSpeed();
+  }
+
+  //Erhöht die Geschwindigkeit der Spielsteine wenn sie nicht schon am Maximum ist
+  void increaseSpeed() {
+    // if (_tetriminoSpeed > maxSpeed) _tetriminoSpeed -= 10;
   }
 }

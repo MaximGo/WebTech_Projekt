@@ -16,14 +16,25 @@ class level {
   level(this._number, this._pointsForNextLevel, this._factorForOneRow, this._factorForTwoRows,
       this._factorForThreeRows, this._factorForFourOrMoreRows);
 
-  /// Getter für die Levelnummer
+  // Getter / Setter für die Levelnummer
   int get number => _number;
   void set number(int n) { _number = n; }
-  /// Getter für die nötigen Punkte zum Levelaufstieg
+
+  // Getter / Setter für die nötigen Punkte zum Levelaufstieg
   int get pointsForNextLevel => _pointsForNextLevel;
   void set pointsForNextLevel(int l) { _pointsForNextLevel = l; }
-  int get factorForFourOrMoreRows => _factorForFourOrMoreRows;
 
+  /// Erhöht das Level, wenn die erreichten Punkte [points] größer sind als nötigen Punkte zum nächsten Level.
+  /// Gibt zurück ob das Level erhöht wurde.
+  bool increaseLevel(int points) {
+
+    if (_pointsForNextLevel <= points) {
+      _number++;
+      _pointsForNextLevel = 3 * _factorForFourOrMoreRows * _number;
+      return true;
+    }
+    else { return false; }
+  }
 
   /// Gib die erhaltenen Punkte für eine aufgelöste Reihe zurück
   /// Erwartet die Anzahl der aufgelösten Reihen [solvedRows]
@@ -36,5 +47,4 @@ class level {
       default: return _factorForFourOrMoreRows*_number;
     }
   }
-
 }
