@@ -4,7 +4,8 @@ part of tetris;
 final Map<String, String> message = {
   'gs': 'Willkommen bei TETRIS',
   'go': 'Oooh Nein! Sie haben Leider Verloren :(',
-  'ig': 'Auf gehts !!'
+  'ig': 'Auf gehts !!',
+  'rl': 'Sie haben seit 10 Steinen keine Reihe gebildet. Rotationssperre für den nächsten stein ist aktiv!'
 };
 
 // Höchste Geschwindigkeit die der Tetrimino beim fallen erreichen kann

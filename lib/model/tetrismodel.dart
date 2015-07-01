@@ -60,12 +60,19 @@ class tetrismodel {
     tetrimino current = _data.currentTetrimino;
     if (!checkTetriminoPosition(current.moveDown())) {
       current.moveUp();
-      if (integrateTetrimino(current.tetriminoField)) _stopGame;
+      _data.gameEnd = false;
+      if (integrateTetrimino(current.tetriminoField)) _stopGame();
 
       //aktueller wird auf nächsten Tetrimino gesetzt und der nächste holt sich einen Zufälligen.
       _data.currentTetrimino = _data.nextTetrimino;
-      _data.nextTetrimino =
+      tetrimino testIfEqual;
+      testIfEqual =
           _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
+      while (testIfEqual == _data.currentTetrimino) {
+        testIfEqual =
+            _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
+      }
+      _data.nextTetrimino = testIfEqual;
 
       // Checkt ob Reihen gelöscht wurden und falls ja, werden die Punkte berechnet
       int deletedRows = checkRows();
@@ -75,8 +82,15 @@ class tetrismodel {
         _rotaLock = 0;
       } else {
         // Erhöht den Counter, es sei denn er ist schon bei 10, dann wird er wieder resetet
-        if (_rotaLock < 10) _rotaLock++;
-        else _rotaLock = 0;
+        if (_rotaLock < 10) {
+          _rotaLock++;
+          if (_rotaLock == 10) {
+            _con.refreshMessage(message["rl"]);
+          }
+        } else {
+          _rotaLock = 0;
+          _con.refreshMessage("");
+        }
       }
     } else {
       integrateTetrimino(current.tetriminoField);
@@ -90,8 +104,10 @@ class tetrismodel {
   void calculateRowElimination(int solvedRows) {
     level l = _data._currentLevel;
     _data.points = l.getPointsForSolvedRows(solvedRows);
-    if (_data.points >= l.pointsForNextLevel) {
-      //_data.increaseLevel();
+    _con.refreshPoints(_data.points);
+    if (l.increaseLevel(_data.points)) {
+      increaseSpeed();
+      _con.refreshLevel(l);
     }
   }
 
@@ -101,9 +117,16 @@ class tetrismodel {
     // Holt sich den aktuellen und den nächsten Spielstein
     _data.currentTetrimino =
         _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
-    _data.nextTetrimino =
-        _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
+    tetrimino testIfEqual;
+    testIfEqual = _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
+    while (testIfEqual == _data.currentTetrimino) {
+      testIfEqual =
+          _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
+    }
+    _data.nextTetrimino = testIfEqual;
     // Gibt das Spielfeld zur Ausgabe auf der View zurück
+    _con.refreshPoints(_data.points);
+    _con.refreshLevel(_data.currentLevel);
     return _data.tetrisField;
   }
 
@@ -111,7 +134,7 @@ class tetrismodel {
   void _stopGame() {
     _data.gameEnd = true;
     // TODO - Nachricht auf der Oberfläche ausgeben
-    String msg = message["go"];
+    _con.refreshMessage(message["go"]);
   }
 
   /// Prüft auf gelöschte Reihen
@@ -129,6 +152,7 @@ class tetrismodel {
       if (piecesInTheRightPlace == gamedata.tetrisFieldWidth) {
         deleteRow(tetField[i]);
         rowMoveUp(tetField, i);
+        i++;
         rowsDeleted++;
       }
       piecesInTheRightPlace = 0;
@@ -136,7 +160,7 @@ class tetrismodel {
     return rowsDeleted;
   }
 
-  /// Prüft das ganze Tetrisfeld und lässt, in der Luft schwebende Blöcke nachrücken
+/// Prüft das ganze Tetrisfeld und lässt, in der Luft schwebende Blöcke nachrücken
   void rowMoveUp(List<List<field>> tetField, int i) {
     if (i == 0) return;
     for (i -= 1; i >= 0; i--) {
@@ -144,7 +168,7 @@ class tetrismodel {
         // Ist das aktuelle Feld belegt und das darunter nicht, dann versetze
         // das aktuelle Feld nach unten
         tetField[i + 1][j] = tetField[i][j];
-        tetField[i][j] = new field(i, j, false);
+        tetField[i][j] = new field(j, i, false);
       }
     }
   }
@@ -180,8 +204,10 @@ class tetrismodel {
     // Durchläuft jede Zeile und jedes Feld des Steines
     for (List<field> row in tetrimino) {
       for (field f in row) {
-        if (!(f.posY < 0) && f.status) checkField[f.posY][f.posX] = f;
-        else _data.gameEnd = true;
+        if (f.status) {
+          if (!(f.posY < 0)) checkField[f.posY][f.posX] = f;
+          else _data.gameEnd = true;
+        }
       }
     }
     _con.refreshTetrisField(checkField);
@@ -272,14 +298,10 @@ class tetrismodel {
     return fieldList;
   }
 
-  // Erhöht das Level sowie die Anzahl der Punkte zum Levelaufstieg
-  void increaseLevel() {
-
-    //increaseSpeed();
-  }
-
   //Erhöht die Geschwindigkeit der Spielsteine wenn sie nicht schon am Maximum ist
   void increaseSpeed() {
-    // if (_tetriminoSpeed > maxSpeed) _tetriminoSpeed -= 10;
+    final newSpeed =
+        gamedata.tetriminoSpeed * pow(0.95, _data.currentLevel.number);
+    _con.increaseSnakeSpeed(newSpeed);
   }
 }
