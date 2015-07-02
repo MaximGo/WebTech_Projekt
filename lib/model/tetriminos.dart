@@ -6,6 +6,16 @@ class tetriminos {
 
   // Liste der geladenen Tetriminosteine
   List<tetrimino> _tetriminoList = new List<tetrimino>();
+  
+  List<tetrimino> _rdyList = new List<tetrimino>();
+  
+  
+  /// Fügt alle Tetriminos deren Level kleiner oder gleich dem aktuellen Level sind, der rdyList hinzu
+  void addToRdyList(int lvl){
+    for(tetrimino t in _tetriminoList){
+      if(t.startsAtLevel<=lvl && !(_rdyList.contains(t))) _rdyList.add(t);
+    }
+  }
 
   /// Fügt ein neunen Tetrimino der Liste hinzu.
   /// Gibt beim erfolgreichen Hinzufügen true sonst false zurück
@@ -23,10 +33,10 @@ class tetriminos {
   /// Erstellt einen Tetrimo und fügt diesen der Liste hinzu
   /// Benötigt den [type] und die Ausrichtungen [hexAlignments]
   /// Gibt beim erfolgreichen Hinzufügen true sonst false zurück
-  bool createTetriminoAndAddToList(String type, List<String> hexAlignments) {
+  bool createTetriminoAndAddToList(String type, List<String> hexAlignments, int startsAtLevel) {
 
     // Erstellt einen Tetrimino und versucht ihn der Liste hinzuzufügen
-    tetrimino t = new tetrimino(type, hexAlignments);
+    tetrimino t = new tetrimino(type, hexAlignments, startsAtLevel);
     return addTetriminoToList(t);
   }
 
@@ -37,8 +47,9 @@ class tetriminos {
 
     // Wählt einen zufälligen Spielstein aus der Liste heraus
     final random = new Random();
-    tetrimino t = _tetriminoList[random.nextInt(_tetriminoList.length)];
+    tetrimino t = _rdyList[random.nextInt(_rdyList.length)];
+    tetrimino clone = new tetrimino(t.type, t.hexAlignments, t.startsAtLevel);
     // Bereitet den Tetrimino auf den Einsatz vor und gibt diesen aus
-    return t.getReadyForUse(color);
+    return clone.getReadyForUse(color);
   }
 }

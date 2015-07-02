@@ -8,13 +8,22 @@ class tetrimino {
   int               _actAlignmentIndex;   // Index der Liste, welche die aktuelle Ausrichtung ist
   List<String>      _hexAlignments;       // Liste aller 4 Ausrichtungen
   List<List<field>> _tetriminoField;      // Liste des 4x4 Tetriminos
+  int               _startsAtLevel;
 
   /// Konstruktor der Klasse Tetrimino.
   /// Benötigt den [_type] und die [_hexAlignments].
-  tetrimino(this._type, this._hexAlignments);
+  tetrimino(this._type, this._hexAlignments, this._startsAtLevel);
 
   /// Getter für das Tetriminofeld
   List<List<field>> get tetriminoField => _tetriminoField;
+  
+  /// Getter für die hexAlignments
+  List<String> get hexAlignments => _hexAlignments;
+  
+  /// Getter für den type
+  String get type => _type;
+  
+  int get startsAtLevel => _startsAtLevel;
 
 
   /// Generiert eine FieldListe aus einem [hexAlignment]

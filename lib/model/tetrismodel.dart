@@ -65,14 +65,8 @@ class tetrismodel {
 
       //aktueller wird auf nächsten Tetrimino gesetzt und der nächste holt sich einen Zufälligen.
       _data.currentTetrimino = _data.nextTetrimino;
-      tetrimino testIfEqual;
-      testIfEqual =
+      _data.nextTetrimino =
           _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
-      while (testIfEqual == _data.currentTetrimino) {
-        testIfEqual =
-            _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
-      }
-      _data.nextTetrimino = testIfEqual;
 
       // Checkt ob Reihen gelöscht wurden und falls ja, werden die Punkte berechnet
       int deletedRows = checkRows();
@@ -80,6 +74,7 @@ class tetrismodel {
         calculateRowElimination(deletedRows);
         // Resetet den Rotrationsblock Counter
         _rotaLock = 0;
+        _con.refreshMessage("");
       } else {
         // Erhöht den Counter, es sei denn er ist schon bei 10, dann wird er wieder resetet
         if (_rotaLock < 10) {
@@ -107,23 +102,19 @@ class tetrismodel {
     _con.refreshPoints(_data.points);
     if (l.increaseLevel(_data.points)) {
       increaseSpeed();
+      _data.tetriminoList.addToRdyList(l.number);
       _con.refreshLevel(l);
     }
   }
 
   /// Startet das Spiel
   List<List<field>> startGame() {
-
+    _data.tetriminoList.addToRdyList(_data.currentLevel.number);
     // Holt sich den aktuellen und den nächsten Spielstein
     _data.currentTetrimino =
         _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
-    tetrimino testIfEqual;
-    testIfEqual = _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
-    while (testIfEqual == _data.currentTetrimino) {
-      testIfEqual =
-          _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
-    }
-    _data.nextTetrimino = testIfEqual;
+    _data.nextTetrimino =
+        _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
     // Gibt das Spielfeld zur Ausgabe auf der View zurück
     _con.refreshPoints(_data.points);
     _con.refreshLevel(_data.currentLevel);
@@ -135,6 +126,8 @@ class tetrismodel {
     _data.gameEnd = true;
     // TODO - Nachricht auf der Oberfläche ausgeben
     _con.refreshMessage(message["go"]);
+    _con.cancelTimer();
+    _con.stopListening();
   }
 
   /// Prüft auf gelöschte Reihen
@@ -255,11 +248,10 @@ class tetrismodel {
 
     // Liest die Tetriminosteine
     tetriminos t = new tetriminos();
-    Map tetrimins = json["Tetriminos"];
-    for (String type in tetrimins.keys) {
-      t.createTetriminoAndAddToList(type, json["Tetriminos"][type]);
+    List tetrimins = json["Tetriminos"];
+    for(int i=0;i<tetrimins.length;i++){
+      t.createTetriminoAndAddToList(tetrimins[i]["type"], tetrimins[i]["alignments"], tetrimins[i]["level"]);
     }
-
     // Liest die Basisleveldaten
     Map lev = json["LevelStart"];
     level l = new level(1, lev["Levelaufstieg"], lev["Reihe1"], lev["Reihe2"],

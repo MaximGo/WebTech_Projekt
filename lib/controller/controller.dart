@@ -10,6 +10,20 @@ class controller {
 
   // Timer für das Bewegen der Tetriminos
   Timer _moveTimer;
+  
+  
+  // Keydown Listener
+  var listener;
+  
+  /// Hört auf die Keyevents zu überwachen
+  void stopListening(){
+    listener.cancel();
+  }
+  
+  /// Hört auf den Tetrisstein automatisch nach unten zu verschieben
+  void cancelTimer(){
+    _moveTimer.cancel();
+  }
 
   /// Konstruktor der controller Klasse
   controller() {
@@ -38,7 +52,7 @@ class controller {
     _moveTimer = new Timer.periodic(gamedata.tetriminoSpeed, (_) => _moveTetrimino());
 
     // Überwacht die nötigen Keyevents
-    window.onKeyDown.listen((KeyboardEvent ev) {
+    listener = window.onKeyDown.listen((KeyboardEvent ev) {
       switch (ev.keyCode) {
         case KeyCode.LEFT:  _model.moveLeft(); break;
         case KeyCode.RIGHT:  _model.moveRight(); break;
