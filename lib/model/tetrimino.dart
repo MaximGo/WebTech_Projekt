@@ -9,10 +9,12 @@ class tetrimino {
   List<String>      _hexAlignments;       // Liste aller 4 Ausrichtungen
   List<List<field>> _tetriminoField;      // Liste des 4x4 Tetriminos
   int               _startsAtLevel;
+  bool              _isJoker;
 
   /// Konstruktor der Klasse Tetrimino.
   /// Benötigt den [_type] und die [_hexAlignments].
   tetrimino(this._type, this._hexAlignments, this._startsAtLevel);
+  
 
   /// Getter für das Tetriminofeld
   List<List<field>> get tetriminoField => _tetriminoField;
@@ -22,6 +24,8 @@ class tetrimino {
   
   /// Getter für den type
   String get type => _type;
+  
+  bool get isJoker => _isJoker;
   
   int get startsAtLevel => _startsAtLevel;
 

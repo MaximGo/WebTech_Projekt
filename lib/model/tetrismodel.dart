@@ -61,31 +61,26 @@ class tetrismodel {
     if (!checkTetriminoPosition(current.moveDown())) {
       current.moveUp();
       _data.gameEnd = false;
-      if (integrateTetrimino(current.tetriminoField)) _stopGame();
-
-      //aktueller wird auf nächsten Tetrimino gesetzt und der nächste holt sich einen Zufälligen.
-      _data.currentTetrimino = _data.nextTetrimino;
-      _data.nextTetrimino =
-          _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
+      if (integrateTetrimino(current.tetriminoField)){
+        _stopGame();
+        return;
+      }
+      if (current.isJoker) {
+        _jokerExplosion();
+        setRotaLock(true);
+        nextTetrimino();
+        return;
+      }
+      
+      nextTetrimino();
 
       // Checkt ob Reihen gelöscht wurden und falls ja, werden die Punkte berechnet
       int deletedRows = checkRows();
       if (deletedRows > 0) {
         calculateRowElimination(deletedRows);
-        // Resetet den Rotrationsblock Counter
-        _rotaLock = 0;
-        _con.refreshMessage("");
+        setRotaLock(true);
       } else {
-        // Erhöht den Counter, es sei denn er ist schon bei 10, dann wird er wieder resetet
-        if (_rotaLock < 10) {
-          _rotaLock++;
-          if (_rotaLock == 10) {
-            _con.refreshMessage(message["rl"]);
-          }
-        } else {
-          _rotaLock = 0;
-          _con.refreshMessage("");
-        }
+        setRotaLock(false);
       }
     } else {
       integrateTetrimino(current.tetriminoField);
@@ -93,6 +88,29 @@ class tetrismodel {
     }
 
     _con.refreshNextTetrimino(_data.nextTetrimino.tetriminoField);
+  }
+
+  void setRotaLock(bool rowsDeleted) {
+    if (rowsDeleted) {
+      _rotaLock = 0;
+      _con.refreshMessage("");
+    } else {
+      if (_rotaLock < 10) {
+        _rotaLock++;
+        if (_rotaLock == 10) {
+          _con.refreshMessage(message["rl"]);
+        }
+      } else {
+        _rotaLock = 0;
+        _con.refreshMessage("");
+      }
+    }
+  }
+
+  void nextTetrimino() {
+    _data.currentTetrimino = _data.nextTetrimino;
+    _data.nextTetrimino =
+        _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
   }
 
   /// Berechnet die Punkte die es für das löschen von Reihen gibt
@@ -128,6 +146,19 @@ class tetrismodel {
     _con.refreshMessage(message["go"]);
     _con.cancelTimer();
     _con.stopListening();
+  }
+
+  void _jokerExplosion() {
+    List<List<field>> tetField = _data.currentTetrimino.tetriminoField;
+    for (int i = tetField.length; i >= 0; i--) {
+      for (int j = 0; j < tetField[i].length; j++) {
+        if (tetField[i][j].status) {
+          deleteRow(_data.tetrisField[tetField[i][j]._posY]);
+          rowMoveUp(_data.tetrisField, tetField[i][j]._posY);
+          break;
+        }
+      }
+    }
   }
 
   /// Prüft auf gelöschte Reihen
@@ -249,8 +280,9 @@ class tetrismodel {
     // Liest die Tetriminosteine
     tetriminos t = new tetriminos();
     List tetrimins = json["Tetriminos"];
-    for(int i=0;i<tetrimins.length;i++){
-      t.createTetriminoAndAddToList(tetrimins[i]["type"], tetrimins[i]["alignments"], tetrimins[i]["level"]);
+    for (int i = 0; i < tetrimins.length; i++) {
+      t.createTetriminoAndAddToList(tetrimins[i]["type"],
+          tetrimins[i]["alignments"], tetrimins[i]["level"]);
     }
     // Liest die Basisleveldaten
     Map lev = json["LevelStart"];
