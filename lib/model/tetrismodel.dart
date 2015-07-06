@@ -66,12 +66,13 @@ class tetrismodel {
         return;
       }
       if (current.isJoker) {
+        _con.refreshMessage(message['jt']);
         _jokerExplosion();
         setRotaLock(true);
         nextTetrimino();
         return;
       }
-      
+
       nextTetrimino();
 
       // Checkt ob Reihen gelöscht wurden und falls ja, werden die Punkte berechnet
@@ -142,7 +143,6 @@ class tetrismodel {
   /// Beendet das Spiel
   void _stopGame() {
     _data.gameEnd = true;
-    // TODO - Nachricht auf der Oberfläche ausgeben
     _con.refreshMessage(message["go"]);
     _con.cancelTimer();
     _con.stopListening();
@@ -159,6 +159,8 @@ class tetrismodel {
         }
       }
     }
+
+    _con.refreshMessage(message['em']);
   }
 
   /// Prüft auf gelöschte Reihen
@@ -281,8 +283,8 @@ class tetrismodel {
     tetriminos t = new tetriminos();
     List tetrimins = json["Tetriminos"];
     for (int i = 0; i < tetrimins.length; i++) {
-      t.createTetriminoAndAddToList(tetrimins[i]["type"],
-          tetrimins[i]["alignments"], tetrimins[i]["level"]);
+      t.createTetriminoAndAddToList(tetrimins[i]["type"], tetrimins[i]["alignments"],
+          tetrimins[i]["level"], tetrimins[i]["joker"]);
     }
     // Liest die Basisleveldaten
     Map lev = json["LevelStart"];

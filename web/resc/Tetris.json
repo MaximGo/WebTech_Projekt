@@ -8,7 +8,8 @@
                 "0x00F0",
                 "0x4444"
             ],
-            "level": 1
+            "level": 1,
+            "joker": true
         },
         {
             "type": "J",
@@ -18,7 +19,8 @@
                 "0x6440",
                 "0x0E20"
             ],
-            "level": 1
+            "level": 1,
+            "joker": false
         },
         {
             "type": "L",
@@ -28,7 +30,8 @@
                 "0xC440",
                 "0x2E00"
             ],
-            "level": 1
+            "level": 1,
+            "joker": false
         },
         {
             "type": "Q",
@@ -38,7 +41,8 @@
                 "0xCC00",
                 "0xCC00"
             ],
-            "level": 2
+            "level": 2,
+            "joker": false
         },
         {
             "type": "S",
@@ -48,7 +52,8 @@
                 "0x6C00",
                 "0x4620"
             ],
-            "level": 1
+            "level": 1,
+            "joker": false
         },
         {
             "type": "T",
@@ -58,7 +63,8 @@
                 "0x4E00",
                 "0x4640"
             ],
-            "level": 1
+            "level": 1,
+            "joker": false
         },
         {
             "type": "Z",
@@ -68,7 +74,8 @@
                 "0xC600",
                 "0x2640"
             ],
-            "level": 1
+            "level": 1,
+            "joker": false
         },
         {
             "type": "U",
@@ -78,7 +85,8 @@
                 "0x7500",
                 "0x6260"
             ],
-            "level": 3
+            "level": 3,
+            "joker": false
         },
         {
             "type": "O",
@@ -88,7 +96,8 @@
                 "0x7570",
                 "0x7570"
             ],
-            "level": 4
+            "level": 4,
+            "joker": false
         }
     ],
     "LevelStart": {

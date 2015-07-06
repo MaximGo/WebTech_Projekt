@@ -2,10 +2,12 @@ part of tetris;
 
 // Die möglichen Nachrichten, die dem Benutzer angezeigt werden
 final Map<String, String> message = {
+  'em': '',
   'gs': 'Willkommen bei TETRIS',
   'go': 'Oooh Nein! Sie haben Leider Verloren :(',
   'ig': 'Auf gehts !!',
-  'rl': 'Sie haben seit 10 Steinen keine Reihe gebildet. Rotationssperre für den nächsten stein ist aktiv!'
+  'rl': 'Sie haben seit 10 Steinen keine Reihe gebildet. Rotationssperre für den nächsten Stein ist aktiv!',
+  'jt': 'Joker-Stein ist aktiv! Alle Reihen der Höhe des Steines werden beim Aufprall gelöscht!'
 };
 
 // Höchste Geschwindigkeit die der Tetrimino beim fallen erreichen kann
