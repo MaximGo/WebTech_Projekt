@@ -61,14 +61,14 @@ class tetrismodel {
     if (!checkTetriminoPosition(current.moveDown())) {
       current.moveUp();
       _data.gameEnd = false;
-      if (integrateTetrimino(current.tetriminoField)){
+      if (integrateTetrimino(current.tetriminoField)) {
         _stopGame();
         return;
       }
       if (current.isJoker) {
-        _con.refreshMessage(message['jt']);
         _jokerExplosion();
         setRotaLock(true);
+        calculateRowElimination(1);
         nextTetrimino();
         return;
       }
@@ -112,6 +112,7 @@ class tetrismodel {
     _data.currentTetrimino = _data.nextTetrimino;
     _data.nextTetrimino =
         _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
+    if (_data.currentTetrimino.isJoker) _con.refreshMessage(message['jt']);
   }
 
   /// Berechnet die Punkte die es für das löschen von Reihen gibt
@@ -134,6 +135,7 @@ class tetrismodel {
         _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
     _data.nextTetrimino =
         _data.tetriminoList.getNextRandomTetrimino(_data.randomColor);
+    if (_data.currentTetrimino.isJoker) _con.refreshMessage(message['jt']);
     // Gibt das Spielfeld zur Ausgabe auf der View zurück
     _con.refreshPoints(_data.points);
     _con.refreshLevel(_data.currentLevel);
@@ -150,11 +152,11 @@ class tetrismodel {
 
   void _jokerExplosion() {
     List<List<field>> tetField = _data.currentTetrimino.tetriminoField;
-    for (int i = tetField.length; i >= 0; i--) {
+    for (int i = 0; i < tetField.length; i++) {
       for (int j = 0; j < tetField[i].length; j++) {
         if (tetField[i][j].status) {
-          deleteRow(_data.tetrisField[tetField[i][j]._posY]);
-          rowMoveUp(_data.tetrisField, tetField[i][j]._posY);
+          deleteRow(_data.tetrisField[tetField[i][j].posY]);
+          rowMoveUp(_data.tetrisField, tetField[i][j].posY);
           break;
         }
       }
@@ -283,8 +285,9 @@ class tetrismodel {
     tetriminos t = new tetriminos();
     List tetrimins = json["Tetriminos"];
     for (int i = 0; i < tetrimins.length; i++) {
-      t.createTetriminoAndAddToList(tetrimins[i]["type"], tetrimins[i]["alignments"],
-          tetrimins[i]["level"], tetrimins[i]["joker"]);
+      t.createTetriminoAndAddToList(tetrimins[i]["type"],
+          tetrimins[i]["alignments"], tetrimins[i]["level"],
+          tetrimins[i]["joker"]);
     }
     // Liest die Basisleveldaten
     Map lev = json["LevelStart"];
