@@ -10,10 +10,13 @@ class tetrismodel {
   /// Erwartet eine Instanz des Controllers [_con].
   tetrismodel(this._con);
 
-  ///Versucht den Tetrimino nach Links zu drehen, sollte das nicht klappen,
-  ///wird er wieder zurückgedreht. Gilt für alle rotate und move Methoden.
+  /// Versucht den Tetrimino nach Links zu drehen, sollte das nicht klappen,
+  /// wird er wieder zurückgedreht. Gilt für alle rotate und move Methoden.
+  /// Außerdem wird der Tetrimino in das Tetrisfeld integriert um auf der View angezeigt zu werden,
+  /// und anschließend wieder gelöscht, damit er beim drehen oder verschieben nicht mit der eigenen vorherigen
+  /// Position kollidiert.
   void rotateLeft() {
-    // Sperre die Rotation, falls zehn Züge keine Reihe mehr gelöscht wurde
+    // Sperre die Rotation, falls zehn Züge keine Reihe mehr gelöscht wurde. Analog für rotateRight
     if (_rotaLock == 10) return;
     tetrimino current = _data.currentTetrimino;
     if (!checkTetriminoPosition(current.rotateLeft())) {
@@ -25,7 +28,6 @@ class tetrismodel {
   }
 
   void rotateRight() {
-    // Sperre die Rotation, falls zehn Züge keine Reihe mehr gelöscht wurde
     if (_rotaLock == 10) return;
     tetrimino current = _data.currentTetrimino;
     if (!checkTetriminoPosition(current.rotateRight())) {
@@ -65,6 +67,8 @@ class tetrismodel {
         _stopGame();
         return;
       }
+      
+      // Wenn der derzeitige Stein ein Joker ist, werden die Reihen entsprechend dem Joker gelöscht und die Punkteberechnung durchgeführt.
       if (current.isJoker) {
         _jokerExplosion();
         setRotaLock(true);
@@ -91,6 +95,10 @@ class tetrismodel {
     _con.refreshNextTetrimino(_data.nextTetrimino.tetriminoField);
   }
 
+  /// Wenn [rowsDeleted] true ist, wird der Zähler bis zur Rotationssperre resetet,
+  /// andernfalls wird er um 1 erhöht.
+  /// Sollte er dabei die 10 überschreiten (also 1 Zug nach der Rotationssperre sein)
+  /// wird wieder von vorne angefangen zu zählen.
   void setRotaLock(bool rowsDeleted) {
     if (rowsDeleted) {
       _rotaLock = 0;
@@ -108,6 +116,8 @@ class tetrismodel {
     }
   }
 
+  /// Der derzeitige Tetrimino wird auf den nächsten gesetzt und der nächste wird zu einem zufälligen Tetrimino.
+  /// Desweiteren wird eine Joker Message ausgegeben sollte der derzeitige Tetrimino ein Joker geworden sein.
   void nextTetrimino() {
     _data.currentTetrimino = _data.nextTetrimino;
     _data.nextTetrimino =
@@ -115,7 +125,7 @@ class tetrismodel {
     if (_data.currentTetrimino.isJoker) _con.refreshMessage(message['jt']);
   }
 
-  /// Berechnet die Punkte die es für das löschen von Reihen gibt
+  /// Berechnet die Punkte die es für das löschen von Reihen gibt und erhöht das Level, falls nötig.
   void calculateRowElimination(int solvedRows) {
     level l = _data._currentLevel;
     _data.points = l.getPointsForSolvedRows(solvedRows);
@@ -127,7 +137,7 @@ class tetrismodel {
     }
   }
 
-  /// Startet das Spiel
+  /// Startet das Spiel (fügt alle Tetriminos die ab Level 1 fallen der rdyList hinzu und setzt derzeitigen und nächsten Tetrimino.
   List<List<field>> startGame() {
     _data.tetriminoList.addToRdyList(_data.currentLevel.number);
     // Holt sich den aktuellen und den nächsten Spielstein
@@ -150,6 +160,8 @@ class tetrismodel {
     _con.stopListening();
   }
 
+  
+  /// Löscht Reihen entsprechend der Höhe des Jokers.
   void _jokerExplosion() {
     List<List<field>> tetField = _data.currentTetrimino.tetriminoField;
     for (int i = 0; i < tetField.length; i++) {
@@ -164,8 +176,8 @@ class tetrismodel {
 
     _con.refreshMessage(message['em']);
   }
-
-  /// Prüft auf gelöschte Reihen
+  
+  /// Prüft auf vollstände Reihen und löscht diese.
   int checkRows() {
     int rowsDeleted = 0;
     List<List<field>> tetField = _data.tetrisField;
@@ -176,7 +188,7 @@ class tetrismodel {
       }
       // Ist kein einziger Stein mehr in der Reihe wird hier abgebrochen
       if (piecesInTheRightPlace == 0) return rowsDeleted;
-      // Ist die Reihe voll so wird sie gelöscht. Ist sies nicht rückt sie nach.
+      // Ist die Reihe voll so wird sie gelöscht. Ist sie es nicht rückt sie nach.
       if (piecesInTheRightPlace == gamedata.tetrisFieldWidth) {
         deleteRow(tetField[i]);
         rowMoveUp(tetField, i);
@@ -188,7 +200,7 @@ class tetrismodel {
     return rowsDeleted;
   }
 
-/// Prüft das ganze Tetrisfeld und lässt, in der Luft schwebende Blöcke nachrücken
+/// Versetzt jede Reihe im [tetField] ab der Höhe [i] um 1 nach unten.
   void rowMoveUp(List<List<field>> tetField, int i) {
     if (i == 0) return;
     for (i -= 1; i >= 0; i--) {
@@ -208,7 +220,7 @@ class tetrismodel {
     }
   }
 
-  /// Entfernt einen Spielstein [tetrimino] aus der Spielfeldliste
+  /// Entfernt einen Spielstein [tetrimino] aus dem Tetrisfeld
   void deleteTetrimino(List<List<field>> tetrimino) {
 
     // Holt sich das Spielfeld
@@ -222,10 +234,10 @@ class tetrismodel {
     }
   }
 
-  /// Fügt einen Spielstein [tetrimino] der Spielfeldliste hinzu
+  /// Fügt einen Spielstein [tetrimino] dem Tetrisfeld hinzu
   /// und ermittelt ob das Spiel beendet ist
   bool integrateTetrimino(List<List<field>> tetrimino) {
-
+    
     // Holt sich das Spielfeld
     List<List<field>> checkField = _data.tetrisField;
 
@@ -285,7 +297,9 @@ class tetrismodel {
     tetriminos t = new tetriminos();
     List tetrimins = json["Tetriminos"];
     for (int i = 0; i < tetrimins.length; i++) {
-      t.createTetriminoAndAddToList(tetrimins[i]["type"],
+      if(tetrimins[i]["joker"]== null) t.createTetriminoAndAddToList(tetrimins[i]["type"],
+          tetrimins[i]["alignments"], tetrimins[i]["level"],false);
+      else t.createTetriminoAndAddToList(tetrimins[i]["type"],
           tetrimins[i]["alignments"], tetrimins[i]["level"],
           tetrimins[i]["joker"]);
     }
@@ -327,7 +341,7 @@ class tetrismodel {
     return fieldList;
   }
 
-  //Erhöht die Geschwindigkeit der Spielsteine wenn sie nicht schon am Maximum ist
+  /// Erhöht die Geschwindigkeit der Spielsteine wenn sie nicht schon am Maximum ist
   void increaseSpeed() {
     final newSpeed =
         gamedata.tetriminoSpeed * pow(0.95, _data.currentLevel.number);

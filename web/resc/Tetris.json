@@ -19,8 +19,7 @@
                 "0x6440",
                 "0x0E20"
             ],
-            "level": 1,
-            "joker": false
+            "level": 1
         },
         {
             "type": "L",
@@ -30,8 +29,7 @@
                 "0xC440",
                 "0x2E00"
             ],
-            "level": 1,
-            "joker": false
+            "level": 1
         },
         {
             "type": "Q",
@@ -41,8 +39,7 @@
                 "0xCC00",
                 "0xCC00"
             ],
-            "level": 2,
-            "joker": false
+            "level": 2
         },
         {
             "type": "S",
@@ -52,8 +49,7 @@
                 "0x6C00",
                 "0x4620"
             ],
-            "level": 1,
-            "joker": false
+            "level": 1
         },
         {
             "type": "T",
@@ -63,8 +59,7 @@
                 "0x4E00",
                 "0x4640"
             ],
-            "level": 1,
-            "joker": false
+            "level": 1
         },
         {
             "type": "Z",
@@ -74,8 +69,7 @@
                 "0xC600",
                 "0x2640"
             ],
-            "level": 1,
-            "joker": false
+            "level": 1
         },
         {
             "type": "U",
@@ -85,8 +79,7 @@
                 "0x7500",
                 "0x6260"
             ],
-            "level": 3,
-            "joker": false
+            "level": 3
         },
         {
             "type": "O",
@@ -96,15 +89,34 @@
                 "0x7570",
                 "0x7570"
             ],
-            "level": 4,
-            "joker": false
+            "level": 4
+        },
+        {
+            "type": "+",
+            "alignments": [
+                "0x4E40",
+                "0x4E40",
+                "0x4E40",
+                "0x4E40"
+            ],
+            "level": 5
+        },
+        {
+            "type": "Br",
+            "alignments": [
+                "0xEEE0",
+                "0xEEE0",
+                "0xEEE0",
+                "0xEEE0"
+            ],
+            "level": 6
         }
     ],
     "LevelStart": {
         "Reihe1": 40,
         "Reihe2": 100,
         "Reihe3": 300,
-        "Reihe4": 1200,
-        "Levelaufstieg": 3600
+        "Reihe4": 500,
+        "Levelaufstieg": 1000
     }
 }
