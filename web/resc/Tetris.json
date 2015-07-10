@@ -39,7 +39,7 @@
                 "0xCC00",
                 "0xCC00"
             ],
-            "level": 2
+            "level": 1
         },
         {
             "type": "S",
@@ -117,6 +117,6 @@
         "Reihe2": 100,
         "Reihe3": 300,
         "Reihe4": 500,
-        "Levelaufstieg": 1000
+        "Levelaufstieg": 500
     }
 }

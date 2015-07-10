@@ -6,7 +6,6 @@ class tetriminos {
 
   // Liste der geladenen Tetriminosteine
   List<tetrimino> _tetriminoList = new List<tetrimino>();
-
   List<tetrimino> _rdyList = new List<tetrimino>();
 
 

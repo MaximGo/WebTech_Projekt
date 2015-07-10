@@ -15,18 +15,10 @@ class tetrimino {
   /// Benötigt den [_type] und die [_hexAlignments].
   tetrimino(this._type, this._hexAlignments, this._startsAtLevel, this._isJoker);
 
-
-  /// Getter für das Tetriminofeld
   List<List<field>> get tetriminoField => _tetriminoField;
-
-  /// Getter für die hexAlignments
   List<String> get hexAlignments => _hexAlignments;
-
-  /// Getter für den type
   String get type => _type;
-
   bool get isJoker => _isJoker;
-
   int get startsAtLevel => _startsAtLevel;
 
 
@@ -173,14 +165,14 @@ class tetrimino {
   }
 
 
-/// Bewegt den Spielstein um ein Feld nach oben
-List<List<field>> moveUp() {
+  /// Bewegt den Spielstein um ein Feld nach oben
+  List<List<field>> moveUp() {
 
-  for (List<field> row in _tetriminoField) {
-    for (field f in row) {
-      f.posY -= 1;
+    for (List<field> row in _tetriminoField) {
+      for (field f in row) {
+        f.posY -= 1;
+      }
     }
+    return _tetriminoField;
   }
-  return _tetriminoField;
-}
 }

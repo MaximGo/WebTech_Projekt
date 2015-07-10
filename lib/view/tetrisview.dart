@@ -5,7 +5,7 @@ part of tetris;
 class tetrisview {
 
   // Schnittstelle zu dem Controller
-  controller _con;
+  tetriscontroller _con;
 
   // Holt sich die nötigen DivElemente zum Ein- und Ausblenden
   final _conStart = querySelector(".con_start");
@@ -21,11 +21,9 @@ class tetrisview {
   final _message = querySelector("#msg");
   final _level = querySelector("#level");
 
-
   /// Der Konstruktor der [tetrisview].
   /// Erwartet zur Kommunikation die Instanz der controller-Klasse [_con].
   tetrisview(_con);
-
 
   /// Wechselt von der Startview zu der Gameview
   void showGameview() {
@@ -35,22 +33,20 @@ class tetrisview {
     refreshMessage(message['ig']);
   }
 
-
   /// Setzt den Starttext [msg] auf der Startseite
-  void refreshStarttext(String msg) { _startText.innerHtml = msg; }
-
+  void refreshStartText(String msg) {
+    _startText.innerHtml = msg;
+  }
 
   /// Aktualisiert das Spielfeld [t]
   void refreshTetrisField(List<List<field>> t) {
     _tetrisfield.innerHtml = _tetrisfieldToHTMLTable(t);
   }
 
-
   /// Aktualisiert den nächst kommenden Stein
   void refreshNextTetrimino(List<List<field>> t) {
     _nextTetrimino.innerHtml = _tetrisfieldToHTMLTable(t);
   }
-
 
   /// Aktualisiert die Levelanzeige und erwartet das aktuelle Level [lev]
   void refreshLevel(level lev) {
@@ -58,18 +54,15 @@ class tetrisview {
     _level.innerHtml = "Level: $number";
   }
 
-
   /// Aktualisiert die übergebene Nachricht [msg]
   void refreshMessage(String msg) {
     _message.innerHtml = msg;
   }
 
-
   /// Aktualisiert die Punkteanzahl [points]
   void refreshPoints(int points) {
     _points.innerHtml = "Punkte: $points";
   }
-
 
   /// Wandelt ein Feld [t] in eine HTML-Tabelle um
   String _tetrisfieldToHTMLTable(List<List<field>> t) {
@@ -78,17 +71,16 @@ class tetrisview {
     String htmlTable = "<table><tbody>";
 
     // Durchläuft jede Zeile des Spielfeldes in der Liste
-    for(List<field> row in t) {
+    for (List<field> row in t) {
       // Erzeugt eine neue Zeile in der HTML-Tabelle
       htmlTable += "<tr>";
 
       // Durchläuft jedes Feld einer Zeile
-      for(field f in row) {
+      for (field f in row) {
         if (f.status) {
           var c = f.color;
           htmlTable += "<td id=\"$c\"></td>";
-        }
-        else htmlTable += "<td></td>";
+        } else htmlTable += "<td></td>";
       }
 
       // Schliesst die Zeile in der HTML-Tabelle

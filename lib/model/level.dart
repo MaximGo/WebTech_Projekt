@@ -30,7 +30,7 @@ class level {
 
     if (_pointsForNextLevel <= points) {
       _number++;
-      _pointsForNextLevel = 2 * _factorForFourOrMoreRows * _number;
+      _pointsForNextLevel = (_pointsForNextLevel + _factorForTwoRows) * _number;
       return true;
     }
     else { return false; }

@@ -2,7 +2,7 @@ part of tetris;
 
 /// Die controller-Klasse kümmert sich um die Kommunikation zwischen View und Model.
 /// Außerdem läuft hier der Timer für das Fallen des Spielsteines und auch die Benutzereingaben werden hier abgefangen
-class controller {
+class tetriscontroller {
 
   // Instazen der Schnittstellen
   tetrismodel _model;
@@ -10,34 +10,28 @@ class controller {
 
   // Timer für das Bewegen der Tetriminos
   Timer _moveTimer;
-  
-  
   // Keydown Listener
-  var listener;
-  
-  /// Hört auf die Keyevents zu überwachen
-  void stopListening(){
-    listener.cancel();
-  }
-  
-  /// Hört auf den Tetrisstein automatisch nach unten zu verschieben
-  void cancelTimer(){
-    _moveTimer.cancel();
-  }
+  var _keyDownListenerlistener;
+
 
   /// Konstruktor der controller Klasse
-  controller() {
+  tetriscontroller() {
 
     // Erzeugt eine Instanzen der nötigen Schnittstellen
     _model = new tetrismodel(this);
     _view = new tetrisview(this);
 
     // Zeigt die Willkommensnachricht an
-    _view.refreshStarttext(message['gs']);
+    _view.refreshStartText(message['gs']);
     // Hört auf den Klick des Startbuttons und liest dann die JSON-Datei ein
     _view.startButton.onClick.listen((_) { _model.loadData("resc/Tetris.json"); });
   }
 
+  /// Hört auf die Keyevents zu überwachen
+  void stopKeyListening() { _keyDownListenerlistener.cancel(); }
+
+  /// Hört auf den Tetrisstein automatisch nach unten zu verschieben
+  void cancelMoveTimer() { _moveTimer.cancel(); }
 
   /// Startet das Spiel
   void startGame() {
@@ -52,7 +46,7 @@ class controller {
     _moveTimer = new Timer.periodic(gamedata.tetriminoSpeed, (_) => _moveTetrimino());
 
     // Überwacht die nötigen Keyevents
-    listener = window.onKeyDown.listen((KeyboardEvent ev) {
+    _keyDownListenerlistener = window.onKeyDown.listen((KeyboardEvent ev) {
       switch (ev.keyCode) {
         case KeyCode.LEFT:  _model.moveLeft(); break;
         case KeyCode.RIGHT:  _model.moveRight(); break;
@@ -79,7 +73,7 @@ class controller {
   void refreshPoints(int points) { _view.refreshPoints(points); }
 
   /// Aktualisiert den Geschwindigkeitstimer der Tetriminos
-  void increaseSnakeSpeed(Duration newSpeed) {
+  void increaseTetriminoSpeed(Duration newSpeed) {
     _moveTimer.cancel();
     _moveTimer = new Timer.periodic(newSpeed, (_) => _moveTetrimino());
   }

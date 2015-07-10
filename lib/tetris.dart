@@ -13,5 +13,5 @@ part 'model/field.dart';
 part 'model/gamedata.dart';
 part 'model/level.dart';
 part 'model/tetrismodel.dart';
-part 'controller/controller.dart';
+part 'controller/tetriscontroller.dart';
 part 'view/tetrisview.dart';
